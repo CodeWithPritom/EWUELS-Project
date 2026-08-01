@@ -24,36 +24,36 @@
 
 ```mermaid
 flowchart TD
-    subgraph Client ["💻 ক্লায়েন্ট সাইড (User Browser)"]
-        User["👨‍🎓 ইউজার (Student/Staff)"]
+    subgraph Client ["💻 Client Side"]
+        User["👨‍🎓 User"]
         Browser["🌐 Web Browser"]
-        User -->|"১. রিকোয়েস্ট পাঠায় (HTTP GET)"| Browser
+        User -->|1 Send Request| Browser
     end
 
-    subgraph Server ["⚡ সার্ভার সাইড (Node.js + Express)"]
+    subgraph Server ["⚡ Server Side"]
         Router["🛣️ Router"]
         Middleware["🛡️ Fine Check Middleware"]
         Controller["🧠 Controller"]
         
-        Browser -->|"২. HTTP Request"| Router
-        Router -->|"৩. চেক সিকিউরিটি ও ফাইন"| Middleware
-        Middleware -->|"৪. পাস করলে লজিকে পাঠায়"| Controller
+        Browser -->|2 HTTP Request| Router
+        Router -->|3 Check Security and Fine| Middleware
+        Middleware -->|4 Pass to Controller| Controller
     end
 
-    subgraph Database ["🗄️ ডাটাবেস লেয়ার (Data Layer)"]
+    subgraph Database ["🗄️ Data Layer"]
         Model["📦 Model"]
-        MySQL[("🐬 MySQL Database")]
-        JSON[("📄 seed_data.json")]
+        MySQL["🐬 MySQL Database"]
+        JSON["📄 seed_data.json"]
         
-        Controller -->|"৫. ডাটা খোঁজে"| Model
-        Model -->|"৬. ডাটাবেস চালু থাকলে"| MySQL
-        Model -.->|"৭. ডাটাবেস বন্ধ থাকলে"| JSON
+        Controller -->|5 Query Data| Model
+        Model -->|6 DB Online| MySQL
+        Model -.->|7 DB Offline Fallback| JSON
     end
 
-    subgraph View ["🎨 ভিউ রেন্ডারিং (EJS UI)"]
+    subgraph View ["🎨 View Rendering"]
         EJS["📄 EJS View"]
-        Controller -->|"৮. ডাটা দিয়ে HTML সাজায়"| EJS
-        EJS -->|"৯. ফাইনাল HTML Response"| Browser
+        Controller -->|8 Render HTML| EJS
+        EJS -->|9 Response to User| Browser
     end
 
     style Client fill:#e0e7ff,stroke:#4338ca,stroke-width:2px
@@ -71,18 +71,18 @@ flowchart TD
 ```mermaid
 stateDiagram-v2
     [*] --> Available
-    Available --> Pending : স্টুডেন্ট রিকোয়েস্ট করলো
-    Pending --> Rejected : স্টাফ বাতিল করলো
-    Rejected --> Available : পুনরায় ক্যাটালগে ফেরত
-    Pending --> Approved : স্টাফ এপ্রুভ করলো
-    Approved --> Cancelled : স্টুডেন্ট ক্যানসেল করলো
-    Cancelled --> Available : ক্যাটালগে ফেরত
-    Approved --> Issued : স্টাফ জিনিস বুঝিয়ে দিলো
-    Issued --> Returned : সময়মত জমা দিলো
-    Returned --> Available : ক্যাটালগে ফেরত
-    Issued --> Overdue : নির্ধারিত সময় পার হয়ে গেল
-    Overdue --> Blocked : ইউজার ব্লক হলো
-    Blocked --> AutoUnblocked : স্টাফ ফাইন সেটল করলো
+    Available --> Pending : Student Request
+    Pending --> Rejected : Staff Reject
+    Rejected --> Available : Back to Catalog
+    Pending --> Approved : Staff Approve
+    Approved --> Cancelled : Student Cancel
+    Cancelled --> Available : Back to Catalog
+    Approved --> Issued : Staff Issue Item
+    Issued --> Returned : Returned on Time
+    Returned --> Available : Back to Catalog
+    Issued --> Overdue : Due Time Exceeded
+    Overdue --> Blocked : User Blocked and Fine Created
+    Blocked --> AutoUnblocked : Fine Paid
     AutoUnblocked --> Returned
 ```
 
@@ -96,14 +96,14 @@ stateDiagram-v2
 graph TD
     A["🌐 Web Request Received"] --> B{"🐬 MySQL Available?"}
     
-    B -->|"YES (Normal Mode)"| C["📦 Query MySQL Database"]
+    B -->|YES Normal Mode| C["📦 Query MySQL Database"]
     C --> D["💾 MySQL Session Store"]
     D --> E["🖥️ Render Page with DB Data"]
 
-    B -->|"NO (Offline Demo Mode)"| F["⚠️ Switch to JSON Fallback"]
+    B -->|NO Offline Mode| F["⚠️ Switch to JSON Fallback"]
     F --> G["📄 Read from seed_data.json"]
     F --> H["🧠 MemorySessionStore"]
-    G --> I["🖥️ Render Page with JSON Demo Data"]
+    G --> I["🖥️ Render Page with JSON Data"]
 
     style B fill:#fef08a,stroke:#ca8a04
     style C fill:#bbf7d0,stroke:#16a34a
@@ -125,18 +125,18 @@ sequenceDiagram
     participant DB as 🗄️ Database or JSON
     participant App as 🧠 App Controller
 
-    Student->>Middleware: পেজ ব্রাউজ বা ক্লিক করলো
-    Middleware->>DB: ইউজারের চালু থাকা 'Issued' রিকোয়েস্ট খোঁজে
-    DB-->>Middleware: ফেরত দেয় Active Issued Items
+    Student->>Middleware: Browse Any Page
+    Middleware->>DB: Fetch Active Issued Requests
+    DB-->>Middleware: Return Active Items
     
-    alt সময় পার হয়ে গেছে (NOW > due_at)
-        Middleware->>DB: ১. নতুন ফাইন তৈরি করো
-        Middleware->>DB: ২. ইউজারের অ্যাকাউন্ট ব্লক করো
-        Middleware->>DB: ৩. ব্লকিং হিস্ট্রি সেভ করো
-        Middleware-->>Student: 🛑 রুট রিডাইরেক্ট (Blocked Page)
-    else সময় পার হয়নি (NOW <= due_at)
-        Middleware->>App: ৪. next() ডাকার মাধ্যমে সাধারণ পেজে যেতে দাও
-        App-->>Student: 📄 নরমাল পেজ দেখাও
+    alt NOW > due_at (Overdue Detected)
+        Middleware->>DB: 1 Create Fine Entry
+        Middleware->>DB: 2 Update User Status to Blocked
+        Middleware->>DB: 3 Save Auto Block Record
+        Middleware-->>Student: Redirect to Blocked Page
+    else NOW <= due_at (Normal Access)
+        Middleware->>App: 4 Call next()
+        App-->>Student: Render Requested Page
     end
 ```
 
@@ -149,16 +149,16 @@ sequenceDiagram
 ```mermaid
 flowchart LR
     subgraph Roles ["👑 EWU Lending System Roles"]
-        StudentRole["👨‍🎓 Student & Faculty"]
-        StaffRole["👮 Staff (Lab Officer)"]
-        AdminRole["👑 Admin (System Controller)"]
+        StudentRole["👨‍🎓 Student and Faculty"]
+        StaffRole["👮 Staff Lab Officer"]
+        AdminRole["👑 Admin System Controller"]
     end
 
     subgraph StudentFeatures ["Student Access"]
-        SF1["🔍 Browse Catalog with Search & Filters"]
+        SF1["🔍 Browse Catalog with Search and Filters"]
         SF2["📝 Request Equipment"]
         SF3["⏱️ 5-min Cancellation Window"]
-        SF4["📋 View My Requests & Fines"]
+        SF4["📋 View My Requests and Fines"]
         StudentRole --> SF1
         StudentRole --> SF2
         StudentRole --> SF3
@@ -168,9 +168,9 @@ flowchart LR
     subgraph StaffFeatures ["Staff Access"]
         ST1["📥 Pending Requests Queue"]
         ST2["✅ Approve or Reject Requests"]
-        ST3["📦 Reserved List & Issue Equipment"]
-        ST4["🔄 Return Form (Good/Damaged)"]
-        ST5["💵 Fine & Block Management"]
+        ST3["📦 Reserved List and Issue Equipment"]
+        ST4["🔄 Return Form Good or Damaged"]
+        ST5["💵 Fine and Block Management"]
         StaffRole --> ST1
         StaffRole --> ST2
         StaffRole --> ST3
@@ -180,8 +180,8 @@ flowchart LR
 
     subgraph AdminFeatures ["Admin Access"]
         AD1["📊 Dashboard Statistics"]
-        AD2["🖼️ Equipment Types & Photo Upload"]
-        AD3["🏷️ Equipment Copies (LAP-001)"]
+        AD2["🖼️ Equipment Types and Photo Upload"]
+        AD3["🏷️ Equipment Copies LAP-001"]
         AD4["👤 Create Staff Accounts"]
         AD5["⚙️ Fine Rate Settings"]
         AD6["📜 System Audit Logs"]
