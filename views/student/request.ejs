@@ -1,0 +1,154 @@
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back link -->
+    <a href="/student/browse" class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-primary-600 transition mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to Catalog
+    </a>
+
+    <!-- Equipment Info -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-6">
+        <div class="flex items-start gap-4">
+            <div class="img-box w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex-shrink-0 overflow-hidden">
+                <% if (type.image_url) { %>
+                    <img src="<%= type.image_url %>" alt="<%= type.name %>"
+                        class="w-full h-full object-cover object-center">
+                <% } else { %>
+                    <div class="w-full h-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                <% } %>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800"><%= type.name %></h1>
+                <div class="flex items-center gap-3 mt-1">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600">
+                        <%= type.category %>
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700">
+                        <%= availableCount %> available
+                    </span>
+                </div>
+                <% if (type.description) { %>
+                    <p class="text-sm text-slate-500 mt-2"><%= type.description %></p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Form -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <h2 class="text-lg font-semibold text-slate-800 mb-5">Submit Request</h2>
+
+        <form action="/student/request/<%= type.id %>" method="POST" class="space-y-5" id="requestForm">
+            <!-- Purpose -->
+            <div>
+                <label for="purpose" class="block text-sm font-medium text-slate-700 mb-1.5">Purpose <span class="text-red-500">*</span></label>
+                <textarea id="purpose" name="purpose" rows="3" required
+                    placeholder="Explain why you need this equipment (e.g., lab assignment, presentation, project work)..."
+                    class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition resize-none"></textarea>
+            </div>
+
+            <!-- Duration Type -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Duration Type <span class="text-red-500">*</span></label>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="duration_type" value="Day" class="peer sr-only" required checked>
+                        <div class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium text-slate-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 peer-checked:text-primary-700 transition-all hover:border-slate-300"
+                            onclick="updateDurationHint('Day')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            Day
+                        </div>
+                    </label>
+                    <label class="relative cursor-pointer">
+                        <input type="radio" name="duration_type" value="Minute" class="peer sr-only">
+                        <div class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium text-slate-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 peer-checked:text-primary-700 transition-all hover:border-slate-300"
+                            onclick="updateDurationHint('Minute')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Minute
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Duration Value -->
+            <div>
+                <label for="duration_value" class="block text-sm font-medium text-slate-700 mb-1.5">Duration <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <input type="number" id="duration_value" name="duration_value" required min="1" value="1"
+                        class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition pr-20">
+                    <span id="durationUnit" class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400 font-medium">day(s)</span>
+                </div>
+                <p id="durationHint" class="text-xs text-slate-400 mt-1">Minimum: 1 day</p>
+            </div>
+
+            <!-- Info box -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <div class="flex gap-3">
+                    <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                    <div class="text-sm text-blue-700">
+                        <p class="font-medium">How it works:</p>
+                        <ul class="mt-1 space-y-1 text-blue-600">
+                            <li>• Your request will be reviewed by lab staff.</li>
+                            <li>• Once approved, you'll have a <strong>5-minute window</strong> to cancel if needed.</li>
+                            <li>• The borrowing timer starts only when staff <strong>issues</strong> the equipment to you.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                class="w-full py-3 px-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-500/25 transition-all duration-200 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 text-sm">
+                Submit Request
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function updateDurationHint(type) {
+        const hint = document.getElementById('durationHint');
+        const unit = document.getElementById('durationUnit');
+        const input = document.getElementById('duration_value');
+
+        if (type === 'Day') {
+            hint.textContent = 'Minimum: 1 day';
+            unit.textContent = 'day(s)';
+            input.min = 1;
+            input.value = Math.max(1, parseInt(input.value) || 1);
+        } else {
+            hint.textContent = 'Minimum: 2 minutes';
+            unit.textContent = 'minute(s)';
+            input.min = 2;
+            input.value = Math.max(2, parseInt(input.value) || 2);
+        }
+    }
+
+    // Client-side validation
+    document.getElementById('requestForm').addEventListener('submit', function(e) {
+        const durationType = document.querySelector('input[name="duration_type"]:checked').value;
+        const durationValue = parseInt(document.getElementById('duration_value').value);
+
+        if (durationType === 'Day' && durationValue < 1) {
+            e.preventDefault();
+            alert('Minimum duration is 1 day.');
+            return;
+        }
+        if (durationType === 'Minute' && durationValue < 2) {
+            e.preventDefault();
+            alert('Minimum duration is 2 minutes.');
+            return;
+        }
+    });
+</script>

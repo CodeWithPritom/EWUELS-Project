@@ -1,0 +1,185 @@
+<!-- Full-screen signup with varsity background -->
+<div class="min-h-screen flex relative">
+
+    <!-- Left: Background Image Panel -->
+    <div class="hidden lg:flex lg:w-2/5 relative overflow-hidden">
+        <img src="/varsity.jpg" alt="East West University Campus"
+            class="absolute inset-0 w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-950/85 via-primary-900/75 to-primary-800/60"></div>
+        <div class="relative z-10 flex flex-col justify-center p-12 text-white">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 backdrop-blur-sm rounded-full text-xs font-semibold tracking-wider uppercase mb-6 border border-white/20 w-fit">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                East West University
+            </div>
+            <h2 class="text-3xl font-extrabold leading-tight mb-4">
+                Join EWU<br>Equipment<br>Lending System
+            </h2>
+            <ul class="space-y-3 text-sm text-primary-200">
+                <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Borrow lab equipment anytime</li>
+                <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Real-time availability tracking</li>
+                <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Automated return reminders</li>
+                <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> EWU email verification required</li>
+            </ul>
+            <div class="mt-10 p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/15">
+                <p class="text-xs text-primary-300 mb-2 uppercase tracking-wider font-semibold">Required Email Domains</p>
+                <p class="text-white font-semibold">Students: @std.ewubd.edu</p>
+                <p class="text-white font-semibold">Faculty: @ewubd.edu</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Signup Form -->
+    <div class="w-full lg:w-3/5 flex items-center justify-center px-6 py-10 bg-white relative">
+        <!-- Mobile background -->
+        <div class="absolute inset-0 lg:hidden">
+            <img src="/varsity.jpg" alt="EWU Campus" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-white/92 backdrop-blur-sm"></div>
+        </div>
+
+        <div class="relative z-10 w-full max-w-lg">
+            <div class="text-center mb-7">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl shadow-lg shadow-primary-500/30 mb-3">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-extrabold text-slate-800">Create Account</h1>
+                <p class="text-slate-500 mt-1 text-sm">Join using your EWU institutional email</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200/80 p-7">
+                <form action="/auth/signup" method="POST" class="space-y-4" id="signupForm">
+                    <!-- Name -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                            <input type="text" id="name" name="name" required placeholder="Your full name"
+                                class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition placeholder:text-slate-400">
+                        </div>
+                    </div>
+
+                    <!-- Role Selector FIRST (so email hint updates) -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">I am a <span class="text-red-500">*</span></label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="role" value="Student" class="peer sr-only" required checked onchange="updateEmailHint(this.value)">
+                                <div class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium text-slate-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 peer-checked:text-primary-700 transition-all hover:border-slate-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                    Student
+                                </div>
+                            </label>
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="role" value="Faculty" class="peer sr-only" onchange="updateEmailHint(this.value)">
+                                <div class="flex items-center justify-center gap-2 px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-medium text-slate-600 peer-checked:border-primary-500 peer-checked:bg-primary-50 peer-checked:text-primary-700 transition-all hover:border-slate-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                    Faculty
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                                </svg>
+                            </div>
+                            <input type="email" id="email" name="email" required
+                                placeholder="yourname@std.ewubd.edu"
+                                class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition placeholder:text-slate-400">
+                        </div>
+                        <p id="emailHint" class="text-xs text-amber-600 mt-1.5 flex items-center gap-1">
+                            <svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                            Students must use <strong>@std.ewubd.edu</strong> email
+                        </p>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <input type="password" id="password" name="password" required placeholder="Min. 6 characters"
+                                class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition placeholder:text-slate-400">
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <label for="password2" class="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                            </div>
+                            <input type="password" id="password2" name="password2" required placeholder="Re-enter password"
+                                class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition placeholder:text-slate-400">
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit"
+                        class="w-full py-2.5 px-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-500/25 transition-all duration-200 shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40">
+                        Create Account →
+                    </button>
+                </form>
+            </div>
+
+            <p class="text-center text-sm text-slate-500 mt-5">
+                Already have an account?
+                <a href="/auth/login" class="text-primary-600 font-semibold hover:text-primary-700 transition">Sign in</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateEmailHint(role) {
+    const hint = document.getElementById('emailHint');
+    const emailInput = document.getElementById('email');
+    if (role === 'Faculty') {
+        hint.innerHTML = '<svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg> Faculty must use <strong>@ewubd.edu</strong> email';
+        emailInput.placeholder = 'yourname@ewubd.edu';
+    } else {
+        hint.innerHTML = '<svg class="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg> Students must use <strong>@std.ewubd.edu</strong> email';
+        emailInput.placeholder = 'yourname@std.ewubd.edu';
+    }
+}
+
+// Client-side email validation on submit
+document.getElementById('signupForm').addEventListener('submit', function(e) {
+    const role = document.querySelector('input[name="role"]:checked')?.value;
+    const email = document.getElementById('email').value.trim().toLowerCase();
+
+    if (role === 'Student' && !email.endsWith('@std.ewubd.edu')) {
+        e.preventDefault();
+        alert('Students must use an @std.ewubd.edu email address.');
+        document.getElementById('email').focus();
+        return;
+    }
+    if (role === 'Faculty' && !email.endsWith('@ewubd.edu')) {
+        e.preventDefault();
+        alert('Faculty must use an @ewubd.edu email address.');
+        document.getElementById('email').focus();
+        return;
+    }
+});
+</script>

@@ -1,0 +1,301 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-slate-800">Equipment Catalog</h1>
+        <p class="text-slate-500 mt-1">Browse available lab equipment and submit a borrowing request.</p>
+    </div>
+
+    <!-- ========== SEARCH & FILTER BAR ========== -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-8">
+        <div class="flex flex-col sm:flex-row gap-3">
+            <!-- Search -->
+            <div class="relative flex-1">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
+                    </svg>
+                </div>
+                <input type="text" id="searchInput" placeholder="Search equipment (e.g. laptop, projector...)"
+                    class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition">
+            </div>
+
+            <!-- Category Filter -->
+            <div class="relative">
+                <select id="categoryFilter" class="appearance-none pl-4 pr-8 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white min-w-[160px]">
+                    <option value="">All Categories</option>
+                    <%
+                        const allTypes = [...available, ...unavailable];
+                        const categories = [...new Set(allTypes.map(t => t.category))].sort();
+                        categories.forEach(cat => {
+                    %>
+                        <option value="<%= cat %>"><%= cat %></option>
+                    <% }); %>
+                </select>
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Availability Filter -->
+            <div class="flex gap-2">
+                <button onclick="setFilter('all')" id="filterAll"
+                    class="filter-btn active px-4 py-2.5 rounded-xl text-sm font-semibold border-2 border-primary-500 bg-primary-50 text-primary-700 transition-all">
+                    All
+                </button>
+                <button onclick="setFilter('available')" id="filterAvailable"
+                    class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold border-2 border-slate-200 text-slate-600 hover:border-emerald-400 hover:text-emerald-700 transition-all">
+                    Available
+                </button>
+                <button onclick="setFilter('unavailable')" id="filterUnavailable"
+                    class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold border-2 border-slate-200 text-slate-600 hover:border-red-400 hover:text-red-600 transition-all">
+                    Unavailable
+                </button>
+            </div>
+        </div>
+
+        <!-- Sort Options -->
+        <div class="flex items-center gap-3 mt-3 pt-3 border-t border-slate-100">
+            <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Sort by:</span>
+            <button onclick="sortItems('name')" id="sortName" class="sort-btn text-xs px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-primary-100 hover:text-primary-700 transition font-medium">
+                Name A→Z
+            </button>
+            <button onclick="sortItems('available')" id="sortAvailable" class="sort-btn text-xs px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-primary-100 hover:text-primary-700 transition font-medium">
+                Most Available
+            </button>
+            <div class="ml-auto">
+                <span id="resultCount" class="text-xs text-slate-400 font-medium"></span>
+            </div>
+        </div>
+    </div>
+    <!-- ========================================== -->
+
+    <% if (available.length === 0 && unavailable.length === 0) { %>
+        <div class="bg-white rounded-2xl border border-slate-200 p-16 text-center">
+            <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-600">No Equipment Available</h3>
+            <p class="text-slate-400 mt-2">The equipment catalog is empty. Check back later!</p>
+        </div>
+    <% } else { %>
+
+        <!-- Available Equipment -->
+        <% if (available.length > 0) { %>
+            <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4" id="availableLabel">
+                ✅ Available (<%= available.length %>)
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-10" id="availableGrid">
+                <% available.forEach(type => { %>
+                    <div class="catalog-card bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg hover:border-primary-200 transition-all duration-200 overflow-hidden group"
+                        data-name="<%= type.name.toLowerCase() %>"
+                        data-category="<%= type.category %>"
+                        data-available="<%= type.available_copies %>"
+                        data-status="available">
+
+                        <!-- Image area -->
+                        <div class="img-box h-44 bg-gradient-to-br from-primary-50 to-primary-100">
+                            <% if (type.image_url) { %>
+                                <img src="<%= type.image_url %>" alt="<%= type.name %>"
+                                    class="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105">
+                            <% } else { %>
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <svg class="w-16 h-16 text-primary-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-4">
+                            <div class="flex items-start justify-between mb-1.5">
+                                <h3 class="font-bold text-slate-800 text-base leading-tight"><%= type.name %></h3>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700 flex-shrink-0 ml-2">
+                                    <%= type.available_copies %>
+                                </span>
+                            </div>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600">
+                                <%= type.category %>
+                            </span>
+
+                            <% if (type.description) { %>
+                                <p class="text-xs text-slate-500 mt-2 line-clamp-2"><%= type.description %></p>
+                            <% } %>
+
+                            <a href="/student/request/<%= type.id %>"
+                                class="mt-3 w-full inline-flex items-center justify-center gap-2 py-2 px-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-sm text-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Request
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+
+        <!-- Unavailable Equipment -->
+        <% if (unavailable.length > 0) { %>
+            <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4" id="unavailableLabel">
+                🔴 Unavailable (<%= unavailable.length %>)
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="unavailableGrid">
+                <% unavailable.forEach(type => { %>
+                    <div class="catalog-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden opacity-70"
+                        data-name="<%= type.name.toLowerCase() %>"
+                        data-category="<%= type.category %>"
+                        data-available="0"
+                        data-status="unavailable">
+
+                        <div class="img-box h-36 bg-gradient-to-br from-slate-50 to-slate-100">
+                            <% if (type.image_url) { %>
+                                <img src="<%= type.image_url %>" alt="<%= type.name %>"
+                                    class="w-full h-full object-cover object-center grayscale">
+                            <% } else { %>
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                            <% } %>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-slate-600 text-sm"><%= type.name %></h3>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-500 mt-1">
+                                <%= type.category %>
+                            </span>
+                            <div class="mt-2">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-red-100 text-red-600">
+                                    All copies in use
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+
+        <!-- No Results -->
+        <div id="noResults" class="hidden text-center py-16">
+            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-600">No equipment found</h3>
+            <p class="text-slate-400 mt-1 text-sm">Try a different search term or filter.</p>
+            <button onclick="resetFilters()" class="mt-4 text-primary-600 text-sm font-semibold hover:text-primary-700">Clear filters</button>
+        </div>
+    <% } %>
+</div>
+
+<script>
+let activeFilter = 'all';
+let activeSort = null;
+
+function getAllCards() {
+    return document.querySelectorAll('.catalog-card');
+}
+
+function applyFilters() {
+    const search = document.getElementById('searchInput').value.toLowerCase().trim();
+    const category = document.getElementById('categoryFilter').value;
+    const cards = getAllCards();
+    let visible = 0;
+
+    cards.forEach(card => {
+        const name = card.dataset.name || '';
+        const cat = card.dataset.category || '';
+        const status = card.dataset.status || '';
+
+        const matchSearch = !search || name.includes(search) || cat.toLowerCase().includes(search);
+        const matchCat = !category || cat === category;
+        const matchStatus = activeFilter === 'all' || status === activeFilter;
+
+        if (matchSearch && matchCat && matchStatus) {
+            card.style.display = '';
+            visible++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    // Update result count
+    const rc = document.getElementById('resultCount');
+    if (rc) rc.textContent = visible + ' result' + (visible !== 1 ? 's' : '');
+
+    // Show/hide no results
+    const nr = document.getElementById('noResults');
+    if (nr) nr.classList.toggle('hidden', visible > 0);
+
+    // Hide section headers if all cards in that section are hidden
+    updateSectionHeaders();
+}
+
+function updateSectionHeaders() {
+    ['available', 'unavailable'].forEach(status => {
+        const grid = document.getElementById(status + 'Grid');
+        const label = document.getElementById(status + 'Label');
+        if (!grid || !label) return;
+        const anyVisible = Array.from(grid.querySelectorAll('.catalog-card')).some(c => c.style.display !== 'none');
+        label.style.display = anyVisible ? '' : 'none';
+    });
+}
+
+function setFilter(f) {
+    activeFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('active', 'border-primary-500', 'bg-primary-50', 'text-primary-700');
+        b.classList.add('border-slate-200', 'text-slate-600');
+    });
+    const active = document.getElementById('filter' + f.charAt(0).toUpperCase() + f.slice(1));
+    if (active) {
+        active.classList.add('active', 'border-primary-500', 'bg-primary-50', 'text-primary-700');
+        active.classList.remove('border-slate-200', 'text-slate-600');
+    }
+    applyFilters();
+}
+
+function sortItems(by) {
+    // Sort available grid
+    sortGrid('availableGrid', by);
+    sortGrid('unavailableGrid', by);
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('bg-primary-100', 'text-primary-700'));
+    const btn = document.getElementById('sort' + by.charAt(0).toUpperCase() + by.slice(1));
+    if (btn) btn.classList.add('bg-primary-100', 'text-primary-700');
+}
+
+function sortGrid(gridId, by) {
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll('.catalog-card'));
+    cards.sort((a, b) => {
+        if (by === 'name') return a.dataset.name.localeCompare(b.dataset.name);
+        if (by === 'available') return parseInt(b.dataset.available) - parseInt(a.dataset.available);
+        return 0;
+    });
+    cards.forEach(c => grid.appendChild(c));
+}
+
+function resetFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('categoryFilter').value = '';
+    setFilter('all');
+}
+
+// Init
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+
+// Initial count
+window.addEventListener('DOMContentLoaded', () => {
+    const rc = document.getElementById('resultCount');
+    const total = document.querySelectorAll('.catalog-card').length;
+    if (rc) rc.textContent = total + ' result' + (total !== 1 ? 's' : '');
+});
+</script>

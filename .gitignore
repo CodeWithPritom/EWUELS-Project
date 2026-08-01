@@ -1,0 +1,74 @@
+# ==========================================
+# 🛑 ENVIRONMENT & SECRETS (CRITICAL)
+# ==========================================
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+!.env.example
+
+# Security Credentials & Keys
+*.pem
+*.key
+*.crt
+*.cert
+*.pfx
+*.p12
+id_rsa
+id_dsa
+secrets.json
+config.json
+
+# ==========================================
+# 📦 DEPENDENCIES & BUILD OUTPUTS
+# ==========================================
+node_modules/
+dist/
+build/
+out/
+.cache/
+
+# ==========================================
+# 📋 LOGS, TEMPORARY & SCRATCH FILES
+# ==========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.tmp
+*.temp
+scratchpad_*.md
+tmp/
+temp/
+
+# ==========================================
+# 🖥️ OS & EDITOR METADATA
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# ==========================================
+# 🤖 AGENT & SYSTEM ARTIFACTS
+# ==========================================
+.gemini/
+.agents/

@@ -1,0 +1,69 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-slate-800">Maintenance Management</h1>
+        <p class="text-slate-500 mt-1">Equipment copies returned in damaged condition. Once repaired by technician, mark them as repaired to make them available for borrowing again.</p>
+    </div>
+
+    <% if (items.length === 0) { %>
+        <div class="bg-white rounded-2xl border border-slate-200 p-16 text-center">
+            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-600">No Items in Maintenance</h3>
+            <p class="text-slate-400 mt-2">All equipment copies are fully operational!</p>
+        </div>
+    <% } else { %>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200">
+                            <th class="text-left px-5 py-3 font-semibold text-slate-600">Unique Code</th>
+                            <th class="text-left px-5 py-3 font-semibold text-slate-600">Equipment Type</th>
+                            <th class="text-left px-5 py-3 font-semibold text-slate-600">Category</th>
+                            <th class="text-center px-5 py-3 font-semibold text-slate-600">Current Status</th>
+                            <th class="text-left px-5 py-3 font-semibold text-slate-600">Reported Condition</th>
+                            <th class="text-right px-5 py-3 font-semibold text-slate-600">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <% items.forEach(item => { %>
+                            <tr class="hover:bg-slate-50/50 transition bg-orange-50/20">
+                                <td class="px-5 py-4 font-mono font-bold text-slate-800"><%= item.unique_code %></td>
+                                <td class="px-5 py-4 font-medium text-slate-700"><%= item.equipment_name %></td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-700">
+                                        <%= item.category %>
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-orange-100 text-orange-700">
+                                        Maintenance
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 text-xs text-red-600 font-semibold">
+                                    <%= item.last_condition || 'Damaged on Return' %>
+                                </td>
+                                <td class="px-5 py-4 text-right">
+                                    <form action="/admin/maintenance/<%= item.id %>/repair" method="POST" class="inline"
+                                        onsubmit="return confirm('Confirm that <%= item.unique_code %> has been repaired and is ready for borrowing?')">
+                                        <button type="submit"
+                                            class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-semibold text-xs transition shadow-sm">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            Mark as Repaired
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% } %>
+</div>

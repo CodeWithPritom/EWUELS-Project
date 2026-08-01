@@ -1,0 +1,213 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800">Equipment Types</h1>
+            <p class="text-slate-500 mt-1">Manage equipment categories like laptops, projectors, and cameras.</p>
+        </div>
+        <a href="/admin/equipment-copies" class="mt-4 sm:mt-0 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-600 bg-primary-50 rounded-xl hover:bg-primary-100 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            Manage Copies
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- ========== ADD/EDIT FORM ========== -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sticky top-24">
+                <h2 class="text-lg font-semibold text-slate-800 mb-4">
+                    <%= editing ? 'Edit Equipment Type' : 'Add New Type' %>
+                </h2>
+                <form action="<%= editing ? '/admin/equipment-types/' + editing.id + '?_method=PUT' : '/admin/equipment-types' %>" method="POST" class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="name" name="name" required placeholder='e.g. "Dell Latitude Laptop"'
+                            value="<%= editing ? editing.name : '' %>"
+                            class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-slate-700 mb-1">Category <span class="text-red-500">*</span></label>
+                        <input type="text" id="category" name="category" required placeholder='e.g. "Laptop", "Projector", "Camera"'
+                            value="<%= editing ? editing.category : '' %>"
+                            class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                        <textarea id="description" name="description" rows="2" placeholder="Optional details..."
+                            class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition resize-none"><%= editing && editing.description ? editing.description : '' %></textarea>
+                    </div>
+
+                    <!-- ========== IMAGE UPLOAD ========== -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Equipment Photo</label>
+
+                        <!-- Upload preview box -->
+                        <div id="imgPreviewBox" class="relative img-box h-36 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 mb-2 cursor-pointer hover:border-primary-400 hover:bg-primary-50 transition-all"
+                            onclick="document.getElementById('imageUploadInput').click()">
+                            <% if (editing && editing.image_url) { %>
+                                <img id="imgPreview" src="<%= editing.image_url %>"
+                                    class="w-full h-full object-cover object-center rounded-xl"
+                                    onerror="this.style.display='none'; document.getElementById('uploadPlaceholder').style.display='flex'">
+                            <% } else { %>
+                                <img id="imgPreview" src="" class="w-full h-full object-cover object-center rounded-xl hidden">
+                            <% } %>
+                            <div id="uploadPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center <%= editing && editing.image_url ? 'hidden' : '' %>">
+                                <svg class="w-8 h-8 text-slate-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <p class="text-xs text-slate-500 font-medium">Click to upload photo</p>
+                                <p class="text-xs text-slate-400">PNG, JPG, WEBP (auto-cropped)</p>
+                            </div>
+                        </div>
+                        <input type="file" id="imageUploadInput" accept="image/*" class="hidden" onchange="handleImageUpload(this)">
+
+                        <!-- Hidden: actual image URL stored -->
+                        <input type="hidden" id="image_url" name="image_url"
+                            value="<%= editing && editing.image_url ? editing.image_url : '' %>">
+
+                        <!-- Or URL text field -->
+                        <div class="relative mt-2">
+                            <input type="text" id="imageUrlText" placeholder="Or paste image URL..."
+                                value="<%= editing && editing.image_url ? editing.image_url : '' %>"
+                                oninput="syncUrlInput(this.value)"
+                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-600 focus:ring-1 focus:ring-primary-400 focus:border-primary-400 outline-none transition">
+                        </div>
+                        <% if (editing && editing.image_url) { %>
+                            <p class="text-xs text-slate-400 mt-1">Current image shown above. Upload new to replace.</p>
+                        <% } %>
+                    </div>
+                    <!-- ================================== -->
+
+                    <div class="flex gap-2">
+                        <button type="submit"
+                            class="flex-1 py-2.5 px-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-sm text-sm">
+                            <%= editing ? 'Update Type' : 'Add Type' %>
+                        </button>
+                        <% if (editing) { %>
+                            <a href="/admin/equipment-types"
+                                class="py-2.5 px-4 bg-slate-100 text-slate-600 font-medium rounded-xl hover:bg-slate-200 transition text-sm">
+                                Cancel
+                            </a>
+                        <% } %>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ========== EQUIPMENT CARD GRID ========== -->
+        <div class="lg:col-span-2">
+            <% if (types.length === 0) { %>
+                <div class="bg-white rounded-2xl border border-slate-200 p-12 text-center">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-600">No Equipment Types Yet</h3>
+                    <p class="text-sm text-slate-400 mt-1">Add your first equipment type using the form.</p>
+                </div>
+            <% } else { %>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <% types.forEach(type => { %>
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden group">
+                            <!-- Photo Showcase -->
+                            <div class="img-box h-40 bg-gradient-to-br from-slate-100 to-slate-200 relative">
+                                <% if (type.image_url) { %>
+                                    <img src="<%= type.image_url %>" alt="<%= type.name %>"
+                                        class="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                                        onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center\'><svg class=\'w-12 h-12 text-slate-300\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\'/></svg></div>'">
+                                <% } else { %>
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                <% } %>
+                                <!-- Availability badge -->
+                                <div class="absolute top-2 right-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-bold shadow-sm
+                                        <%= type.available_copies > 0 ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white' %>">
+                                        <%= type.available_copies %> / <%= type.total_copies %>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Info -->
+                            <div class="p-4">
+                                <h3 class="font-bold text-slate-800 text-sm mb-1"><%= type.name %></h3>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600">
+                                    <%= type.category %>
+                                </span>
+                                <% if (type.description) { %>
+                                    <p class="text-xs text-slate-400 mt-1 line-clamp-1"><%= type.description %></p>
+                                <% } %>
+
+                                <!-- Actions -->
+                                <div class="flex items-center gap-1 mt-3">
+                                    <a href="/admin/equipment-copies?type=<%= type.id %>"
+                                        class="flex-1 text-center py-1.5 text-xs font-semibold text-cyan-700 bg-cyan-50 rounded-lg hover:bg-cyan-100 transition">
+                                        View Copies
+                                    </a>
+                                    <a href="/admin/equipment-types/<%= type.id %>/edit"
+                                        class="p-1.5 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        </svg>
+                                    </a>
+                                    <form action="/admin/equipment-types/<%= type.id %>?_method=DELETE" method="POST" class="inline"
+                                        onsubmit="return confirm('Delete this equipment type?')">
+                                        <button type="submit"
+                                            class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+// Handle file upload → base64 → preview + hidden field
+function handleImageUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        // Show preview
+        const preview = document.getElementById('imgPreview');
+        const placeholder = document.getElementById('uploadPlaceholder');
+        preview.src = dataUrl;
+        preview.classList.remove('hidden');
+        if (placeholder) placeholder.classList.add('hidden');
+        // Store in hidden field and URL text
+        document.getElementById('image_url').value = dataUrl;
+        document.getElementById('imageUrlText').value = '(uploaded image)';
+    };
+    reader.readAsDataURL(file);
+}
+
+// Sync text URL input to hidden field
+function syncUrlInput(val) {
+    if (!val || val === '(uploaded image)') return;
+    document.getElementById('image_url').value = val;
+    // Update preview
+    const preview = document.getElementById('imgPreview');
+    const placeholder = document.getElementById('uploadPlaceholder');
+    if (val.startsWith('http') || val.startsWith('data:')) {
+        preview.src = val;
+        preview.classList.remove('hidden');
+        if (placeholder) placeholder.classList.add('hidden');
+    }
+}
+</script>

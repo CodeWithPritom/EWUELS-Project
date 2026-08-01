@@ -1,0 +1,165 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800">Equipment Copies</h1>
+            <p class="text-slate-500 mt-1">
+                <% if (selectedType) { %>
+                    Managing copies of <span class="font-semibold text-slate-700"><%= selectedType.name %></span>
+                <% } else { %>
+                    All individual equipment units across all types.
+                <% } %>
+            </p>
+        </div>
+        <a href="/admin/equipment-types" class="mt-4 sm:mt-0 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Types
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Add Copy Form -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sticky top-24">
+                <h2 class="text-lg font-semibold text-slate-800 mb-4">Add New Copy</h2>
+                <form action="/admin/equipment-copies" method="POST" class="space-y-4">
+                    <div>
+                        <label for="equipment_type_id" class="block text-sm font-medium text-slate-700 mb-1">Equipment Type <span class="text-red-500">*</span></label>
+                        <select id="equipment_type_id" name="equipment_type_id" required
+                            class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition bg-white">
+                            <option value="">Select a type...</option>
+                            <% types.forEach(t => { %>
+                                <option value="<%= t.id %>" <%= selectedType && selectedType.id === t.id ? 'selected' : '' %>>
+                                    <%= t.name %> (<%= t.category %>)
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="unique_code" class="block text-sm font-medium text-slate-700 mb-1">Unique Code <span class="text-red-500">*</span></label>
+                        <input type="text" id="unique_code" name="unique_code" required placeholder='e.g. "LAP-001", "CAM-003"'
+                            class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition uppercase">
+                        <p class="text-xs text-slate-400 mt-1">Must be unique across all copies.</p>
+                    </div>
+                    <button type="submit"
+                        class="w-full py-2.5 px-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-sm text-sm">
+                        Add Copy
+                    </button>
+                </form>
+            </div>
+
+            <!-- Filter by Type -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mt-6">
+                <h3 class="text-sm font-semibold text-slate-600 mb-3">Filter by Type</h3>
+                <div class="space-y-1">
+                    <a href="/admin/equipment-copies"
+                        class="block px-3 py-2 rounded-lg text-sm transition
+                            <%= !selectedType ? 'bg-primary-50 text-primary-700 font-medium' : 'text-slate-600 hover:bg-slate-50' %>">
+                        All Types
+                    </a>
+                    <% types.forEach(t => { %>
+                        <a href="/admin/equipment-copies?type=<%= t.id %>"
+                            class="block px-3 py-2 rounded-lg text-sm transition
+                                <%= selectedType && selectedType.id === t.id ? 'bg-primary-50 text-primary-700 font-medium' : 'text-slate-600 hover:bg-slate-50' %>">
+                            <%= t.name %>
+                        </a>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copies Table -->
+        <div class="lg:col-span-2">
+            <% if (copies.length === 0) { %>
+                <div class="bg-white rounded-2xl border border-slate-200 p-12 text-center">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-600">No Copies Found</h3>
+                    <p class="text-sm text-slate-400 mt-1">
+                        <% if (selectedType) { %>
+                            Add copies for "<%= selectedType.name %>" using the form.
+                        <% } else { %>
+                            Add equipment types first, then add copies here.
+                        <% } %>
+                    </p>
+                </div>
+            <% } else { %>
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200">
+                                    <th class="text-left px-5 py-3 font-semibold text-slate-600">Code</th>
+                                    <th class="text-left px-5 py-3 font-semibold text-slate-600">Equipment</th>
+                                    <th class="text-left px-5 py-3 font-semibold text-slate-600">Category</th>
+                                    <th class="text-center px-5 py-3 font-semibold text-slate-600">Status</th>
+                                    <th class="text-right px-5 py-3 font-semibold text-slate-600">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <% copies.forEach(copy => { %>
+                                    <tr class="hover:bg-slate-50/50 transition">
+                                        <td class="px-5 py-4">
+                                            <span class="font-mono font-bold text-slate-800"><%= copy.unique_code %></span>
+                                        </td>
+                                        <td class="px-5 py-4 text-slate-700"><%= copy.type_name %></td>
+                                        <td class="px-5 py-4">
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-700">
+                                                <%= copy.category %>
+                                            </span>
+                                        </td>
+                                        <td class="px-5 py-4 text-center">
+                                            <%
+                                                const statusColors = {
+                                                    'Available': 'bg-emerald-100 text-emerald-700',
+                                                    'Pending': 'bg-yellow-100 text-yellow-700',
+                                                    'Reserved': 'bg-blue-100 text-blue-700',
+                                                    'Issued': 'bg-violet-100 text-violet-700',
+                                                    'Maintenance': 'bg-orange-100 text-orange-700'
+                                                };
+                                            %>
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold <%= statusColors[copy.status] || 'bg-slate-100 text-slate-700' %>">
+                                                <%= copy.status %>
+                                            </span>
+                                        </td>
+                                        <td class="px-5 py-4">
+                                            <div class="flex items-center justify-end gap-1">
+                                                <% if (copy.status === 'Maintenance') { %>
+                                                    <form action="/admin/equipment-copies/<%= copy.id %>/status?_method=PUT" method="POST" class="inline">
+                                                        <input type="hidden" name="status" value="Available">
+                                                        <button type="submit" title="Mark as Available"
+                                                            class="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition">
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                <% } %>
+                                                <% if (['Available', 'Maintenance'].includes(copy.status)) { %>
+                                                    <form action="/admin/equipment-copies/<%= copy.id %>?_method=DELETE" method="POST" class="inline"
+                                                        onsubmit="return confirm('Delete copy <%= copy.unique_code %>?')">
+                                                        <button type="submit" title="Delete"
+                                                            class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                <% } %>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>

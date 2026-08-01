@@ -1,0 +1,61 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-slate-800">System Audit Log</h1>
+        <p class="text-slate-500 mt-1">Complete chronological record of all administrative, staff, and automated system actions.</p>
+    </div>
+
+    <% if (logs.length === 0) { %>
+        <div class="bg-white rounded-2xl border border-slate-200 p-16 text-center">
+            <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-600">No Audit Logs Yet</h3>
+            <p class="text-slate-400 mt-2">Actions performed in the system will be recorded here.</p>
+        </div>
+    <% } else { %>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200">
+                            <th class="text-left px-5 py-3 font-semibold text-slate-600">Timestamp</th>
+                            <th class="text-left px-5 py-3 font-semibold text-slate-600">Actor</th>
+                            <th class="text-left px-5 py-3 font-semibold text-slate-600">Action</th>
+                            <th class="text-left px-5 py-3 font-semibold text-slate-600">Target</th>
+                            <th class="text-left px-5 py-3 font-semibold text-slate-600">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <% logs.forEach(log => { %>
+                            <tr class="hover:bg-slate-50/50 transition">
+                                <td class="px-5 py-4 text-xs font-mono text-slate-500 whitespace-nowrap">
+                                    <%= new Date(log.created_at).toLocaleString() %>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <div>
+                                        <p class="font-medium text-slate-800"><%= log.actor_name %></p>
+                                        <p class="text-xs text-slate-400"><%= log.actor_role %> (<%= log.actor_email %>)</p>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-100 text-slate-700">
+                                        <%= log.action %>
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 text-xs text-slate-600 font-medium">
+                                    <%= log.target_type ? log.target_type + ' #' + log.target_id : '—' %>
+                                </td>
+                                <td class="px-5 py-4 text-xs text-slate-600 max-w-xs">
+                                    <%= log.details || '—' %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% } %>
+</div>

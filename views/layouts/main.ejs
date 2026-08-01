@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'EWU Equipment Lending System' %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50:  '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                            950: '#1e1b4b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+
+        /* ========== TRAIN TICKER ANIMATION ========== */
+        .train-ticker {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%);
+            overflow: hidden;
+            position: relative;
+            height: 36px;
+            display: flex;
+            align-items: center;
+        }
+        .train-ticker::before,
+        .train-ticker::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 60px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .train-ticker::before {
+            left: 0;
+            background: linear-gradient(to right, #1e1b4b, transparent);
+        }
+        .train-ticker::after {
+            right: 0;
+            background: linear-gradient(to left, #1e1b4b, transparent);
+        }
+        .train-track {
+            display: flex;
+            align-items: center;
+            animation: trainRide 22s linear infinite;
+            white-space: nowrap;
+            will-change: transform;
+        }
+        .train-track:hover { animation-play-state: paused; }
+        @keyframes trainRide {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .train-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 28px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(199,210,254,0.95);
+        }
+        .train-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #a5b4fc;
+            flex-shrink: 0;
+        }
+        .train-locomotive {
+            font-size: 16px;
+            padding: 0 12px;
+            animation: smokePuff 1.2s ease-in-out infinite alternate;
+        }
+        @keyframes smokePuff {
+            from { transform: translateY(0px); opacity: 1; }
+            to   { transform: translateY(-2px); opacity: 0.85; }
+        }
+
+        /* ========== PHOTO PLACEHOLDER ========== */
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        .img-box {
+            overflow: hidden;
+            position: relative;
+        }
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+        .img-box:hover img { transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+    <!-- ========== TRAIN TICKER BAR ========== -->
+    <div class="train-ticker w-full">
+        <div class="train-track">
+            <!-- First set -->
+            <span class="train-locomotive">🚂</span>
+            <span class="train-item"><span class="train-dot"></span> EWU Equipment Lending System</span>
+            <span class="train-item"><span class="train-dot"></span> East West University — Dhaka</span>
+            <span class="train-item"><span class="train-dot"></span> Borrow Lab Equipment Easily</span>
+            <span class="train-item"><span class="train-dot"></span> Laptops · Projectors · Cameras · Arduino</span>
+            <span class="train-item"><span class="train-dot"></span> Smart Automated Fine & Block System</span>
+            <span class="train-item"><span class="train-dot"></span> Only for @std.ewubd.edu & @ewubd.edu</span>
+            <span class="train-locomotive">🚃</span>
+            <!-- Duplicate for seamless loop -->
+            <span class="train-item"><span class="train-dot"></span> EWU Equipment Lending System</span>
+            <span class="train-item"><span class="train-dot"></span> East West University — Dhaka</span>
+            <span class="train-item"><span class="train-dot"></span> Borrow Lab Equipment Easily</span>
+            <span class="train-item"><span class="train-dot"></span> Laptops · Projectors · Cameras · Arduino</span>
+            <span class="train-item"><span class="train-dot"></span> Smart Automated Fine & Block System</span>
+            <span class="train-item"><span class="train-dot"></span> Only for @std.ewubd.edu & @ewubd.edu</span>
+            <span class="train-locomotive">🚃</span>
+        </div>
+    </div>
+    <!-- ========================================= -->
+
+    <%- include('../partials/flash') %>
+
+    <% if (typeof user !== 'undefined' && user) { %>
+        <%- include('../partials/navbar') %>
+    <% } %>
+
+    <main class="flex-1">
+        <%- body %>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+</body>
+</html>
