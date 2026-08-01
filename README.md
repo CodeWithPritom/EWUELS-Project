@@ -1,38 +1,59 @@
-# University Equipment Lending System (UELS)
+# EWU Equipment Lending System (EWU ELS)
 
-UELS is a web-based management platform designed to automate and simplify the process of borrowing lab hardware and equipment (such as laptops, projectors, camera gears, and microcontrollers) within a university environment. The application is built using the Model-View-Controller (MVC) architectural pattern.
+EWU ELS is a web-based management platform designed to automate and simplify the process of borrowing lab hardware and equipment (such as laptops, projectors, camera gears, and microcontrollers) for **East West University (EWU)**. Built using the Model-View-Controller (MVC) architectural pattern.
 
-## Tech Stack
+---
+
+## 🔑 Quick Demo Credentials (Test Accounts)
+
+You can instantly log in and test all user roles (Admin, Staff, Student, Faculty) using these seeded test credentials (works in both Database Mode and Offline Demo Mode):
+
+| Role | Email Address | Password | Account Status / Access |
+| :--- | :--- | :--- | :--- |
+| 👑 **System Admin** | `admin@uels.edu` | `admin123` | Full system control, photo upload, audit logs |
+| 👮 **Lab Staff** | `rahim.staff@uels.edu` | `staff123` | Approve, issue, return items, collect fines |
+| 👨‍🎓 **Student (Active)** | `arif.student@uels.edu` | `student123` | Browse catalog, request items (min 2 mins) |
+| 👨‍🎓 **Student (EWU Mail)** | `student@std.ewubd.edu` | `student123` | Official student email domain account |
+| 🛑 **Student (Blocked)** | `nadia.student@uels.edu` | `nadia123` | Overdue blocked account test |
+| 👨‍🏫 **Faculty** | `karim.faculty@uels.edu` | `faculty123` | Faculty borrowing account |
+
+> 💡 **Note for Self-Registration**: New students must sign up using an **`@std.ewubd.edu`** email, and faculty must use an **`@ewubd.edu`** email.
+
+---
+
+## 🛠️ Tech Stack
 - **Core**: Node.js & Express.js
-- **Frontend Template Engine**: EJS with Tailwind CSS (via CDN)
+- **Frontend Template Engine**: EJS with Tailwind CSS & Custom Train Animations
 - **Database**: MySQL/MariaDB (configured for XAMPP default settings)
+- **Offline Mode**: Automatic JSON Data Fallback (`data/seed_data.json`)
 - **Authentication & Security**: Session-based auth with `express-session`, `express-mysql-session`, and `bcrypt` password hashing
 
 ---
 
-## Installation & Setup
+## 🚀 Quick Start / Installation & Setup
 
-Follow these steps to deploy and run the project locally on your machine.
+Follow these steps to deploy and run the project locally on your machine:
 
 ### 1. Prerequisites
 Ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (v16+ recommended)
-- [XAMPP](https://www.apachefriends.org/) (with Apache & MySQL modules running)
+- [XAMPP](https://www.apachefriends.org/) (with Apache & MySQL modules running — *optional if testing in Offline Demo Mode*)
 
 ### 2. Clone or Copy Files
 Navigate to the project root directory:
 ```bash
-cd e:\Websites\UELS
+git clone https://github.com/CodeWithPritom/EWUELS-Project.git
+cd EWUELS-Project
 ```
 
 ### 3. Install NPM Dependencies
-Run the install command to configure all development and production modules:
+Run the install command to configure all required modules:
 ```bash
 npm install
 ```
 
 ### 4. Configure Environment Variables
-Create a `.env` file in the root of the project (if not already present). Refer to `.env.example` for details:
+Create a `.env` file in the root directory (refer to `.env.example`):
 ```env
 # Database Credentials
 DB_HOST=127.0.0.1
@@ -59,9 +80,9 @@ Make sure XAMPP MySQL is active. Run the automated database setup script:
 ```bash
 node setup.js
 ```
-*What this does:* Connects to your local MySQL instance, creates the database `uels_db` if it does not exist, registers the table structures, seeds the default fine rates, and inserts the default administrator account.
+*What this does:* Connects to your local MySQL instance, creates `uels_db`, registers all tables, seeds fine rates, and inserts the default administrator account.
 
-### 6. Run the Project
+### 6. Run the Application
 Start the development server using `nodemon`:
 ```bash
 npm run dev
@@ -70,80 +91,52 @@ Open your browser and visit: **[http://localhost:3000](http://localhost:3000)**
 
 ---
 
-## Default Administrator Credentials
-Use the seeded administrator account to configure settings, add equipment, and create staff credentials:
-- **Email**: `admin@uels.edu`
-- **Password**: `admin123`
-
----
-
-## Role-Based Overview
-
-### 👤 Student / Faculty
-- **Self-Registration**: Can sign up themselves directly from the Signup portal.
-- **Browse Catalog**: Inspect available equipment categories and check live item counts.
-- **Requests**: Submit borrow requests with duration types (Days/Minutes).
-- **Cancel Window**: Can cancel any approved reservation within a 5-minute cooldown period.
-- **My Fines & History**: Read-only tracking of active borrowings and outstanding balances.
-
-### 💼 Lab Staff
-- **Approve / Reject**: Manage the pending request queue (validates student blocks and fines before allowing checkout).
-- **Issue Equipment**: Hand over items to students (calculates the due date/time and starts the timer).
-- **Process Returns**: Inspect item conditions (Good/Damaged), calculate overdue durations, calculate fine fees, and auto-block overdue borrowers.
-- **Fine Management**: Confirm in-person payments to mark fines as Paid (auto-unblocks students if blocked type is `Auto`).
-- **Block Management**: Manually block students for policy violations (requires reason notes).
-
-### ⚙️ System Administrator
-- **Equipment CRUD**: Create, edit, and delete equipment categories.
-- **Manage Copies**: Track physical unit statuses (`Available`, `Pending`, `Reserved`, `Issued`, `Maintenance`) and register new codes (e.g. `LAP-001`).
-- **Staff Accounts**: Register credentials for lab staff assistants.
-- **Fine Rate Configuration**: Modify rates for late minutes/days dynamically from the UI.
-- **Maintenance**: Review damaged items in repair and return them back to `Available` status.
-- **Audit Logs**: View timestamped actions performed across the entire system.
-
----
-
-## QA Testing
-To verify database structure, constraints, late returns, and automated unblock logic, run the test script:
-```bash
-node qa_test.js
-```
-
----
-
 ## 🔌 Offline / Demo Mode (Database Fallback)
 
-UELS includes a built-in **fallback system**. If MySQL is unavailable (e.g., XAMPP not running), the application automatically switches to **Demo Mode**, reading data from the local file:
+EWU ELS includes a built-in **Hybrid Fallback System**. If MySQL is unavailable (e.g., XAMPP is not running), the application automatically switches to **Demo Mode**, serving data directly from:
 
 ```
 /data/seed_data.json
 ```
 
-### What works in Demo Mode
-- ✅ Full website navigation
-- ✅ Login for all roles (Admin, Staff, Student, Faculty)
-- ✅ Admin Dashboard with live statistics from JSON
-- ✅ Equipment Types & Copies listing
-- ✅ Requests, Fines, and Audit Log views
-- ✅ Fine Rate settings (in-memory for session)
-- ✅ Student Catalog browsing
+### What works in Demo Mode:
+- ✅ Full website navigation & responsive UI
+- ✅ Login for all roles using the Demo Credentials table above
+- ✅ Admin Dashboard & live statistics
+- ✅ Equipment Catalog with search, category filters & photo showcase
+- ✅ Fine settings, maintenance logs & audit logs
 
-### Demo Credentials
+---
 
-| Role | Email | Password |
-|------|-------|----------|
-| **Admin** | `admin@uels.edu` | `admin123` |
-| **Staff** | `rahim.staff@uels.edu` | `staff123` |
-| **Student** (Active) | `arif.student@uels.edu` | `student123` |
-| **Student** (Blocked) | `nadia.student@uels.edu` | `nadia123` |
-| **Faculty** | `karim.faculty@uels.edu` | `faculty123` |
+## 👥 Role-Based Overview
 
-### Limitations in Demo Mode
-- ⚠️ All writes (new equipment, approvals, etc.) are **in-memory only** — data resets on server restart
-- ⚠️ Session-based authentication still works but new signups won't persist
+### 👨‍🎓 Student / Faculty
+- **EWU Email Verification**: Requires `@std.ewubd.edu` (Students) or `@ewubd.edu` (Faculty).
+- **Browse Catalog**: Real-time search, category filter, availability toggles, and item photos.
+- **Requests**: Submit borrow requests with duration types (Min 2 minutes or 1 day).
+- **5-Min Cancellation Window**: Cancel approved reservations within a 5-minute cooldown period.
+- **My Fines & History**: Track borrowings and outstanding fine balances.
 
-### Architecture
-The fallback system is implemented in three key files:
-- **`config/db.js`** — Tests DB on startup; exports `isAvailable()` flag
-- **`config/fallback.js`** — In-memory data store loaded from `seed_data.json`
-- **`models/*.js`** — Every model tries DB first, silently falls back on error
+### 👮 Lab Staff
+- **Approve / Reject Queue**: Review pending student requests.
+- **Issue Equipment**: Hand over items to students (starts the borrowing timer).
+- **Process Returns**: Inspect item condition (Good/Damaged), calculate overdue fees, and handle returns.
+- **Fine & Block Management**: Mark fines as Paid (automatically unblocks students).
+
+### 👑 System Administrator
+- **Equipment Types & Photos**: Create equipment categories with auto-cropped image upload support.
+- **Manage Copies**: Track physical unit statuses (`Available`, `Pending`, `Reserved`, `Issued`, `Maintenance`) and unit codes (e.g. `LAP-001`).
+- **Staff Accounts**: Register credentials for lab staff assistants.
+- **Fine Rate Configuration**: Modify rates per day/minute dynamically from UI.
+- **Audit Logs**: View timestamped logs of all administrative actions.
+
+---
+
+## 🧪 QA Testing & Verification
+To test database structure, overdue calculations, and automated unblock logic, run:
+```bash
+node qa_test.js
+```
+
+---
+*Created for East West University (EWU) — Equipment Lending System*
