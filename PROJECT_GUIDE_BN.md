@@ -1,57 +1,188 @@
-# 🎓 EWU Equipment Lending System — সম্পূর্ণ কোর্স, কোড ব্যাখ্যা ও ভাইভা গাইড
+# 🎓 EWU Equipment Lending System — সম্পূর্ণ কোর্স, ভিজ্যুয়াল ডায়াগ্রাম ও ভাইভা গাইড
 
-> **বিশেষ নির্দেশনা:** এই ডকুমেন্টটি এমনভাবে লেখা হয়েছে যেন একজন শিক্ষার্থী, যে আগে **কখনো জাভাস্ক্রিপ্ট বা ওয়েব ডেভেলপমেন্টের কোড লেখেনি**, সেও একদম শুরু থেকে কনসেপ্ট শিখে শিক্ষক বা ভাইভা বোর্ডের সামনে কোডের লাইন-বাই-লাইন লজিক নির্ভীকভাবে বুঝিয়ে বলতে পারে।
+> **বিশেষ নির্দেশনা:** এই ডকুমেন্টটি ভিজ্যুয়াল ডায়াগ্রাম (**Mermaid Visual Diagrams**), ভিজ্যুয়াল ফ্লোচার্ট এবং সহজ বাংলা ব্যাখ্যার সমন্বয়ে তৈরি। একজন নতুন শিক্ষার্থী খুব সহজে ছবি দেখে ও ডায়াগ্রাম বুঝে পুরো প্রজেক্টের লজিক, আর্কিটেকচার এবং ভাইভার প্রশ্ন আয়ত্ত করতে পারবে।
 
 ---
 
 # 📚 সূচিপত্র (Table of Contents)
-1. [🏫 পার্ট ১: একদম নতুনদের জন্য ওয়েবসাইট ও কোডিং শিক্ষা (Beginner Crash Course)](#-পার্ট-১-একদম-নতুনদের-জন্য-ওয়েবসাইট-ও-কোডিং-শিক্ষা-beginner-crash-course)
-2. [🛠️ পার্ট ২: জিরো থেকে এমন প্রজেক্ট কীভাবে বানাতে হয় (Step-by-Step Build Guide)](#-পার্ট-২-জিরো-থেকে-এমন-প্রজেক্ট-কীভাবে-বানাতে-হয়-step-by-step-build-guide)
-3. [📌 পার্ট ৩: প্রজেক্টের উদ্দেশ্য ও বাস্তব উদাহরণ (Real-Life Scenario)](#-পার্ট-৩-প্রজেক্টের-উদ্দেশ্য-ও-বাস্তব-উদাহরণ-real-life-scenario)
-4. [📁 পার্ট ৪: প্রজেক্ট ফাইল ও ফোল্ডার পরিচিতি (Folder Architecture)](#-পার্ট-৪-প্রজেক্ট-ফাইল-ও-ফোল্ডার-পরিচিতি-folder-architecture)
-5. [💻 পার্ট ৫: মূল কোডের লাইন-বাই-লাইন ব্যাখ্যা (Line-by-Line Code Breakdown)](#-পার্ট-৫-মূল-কোডের-লাইন-বাই-লাইন-ব্যাখ্যা-line-by-line-code-breakdown)
-6. [🔄 পার্ট ৬: সিস্টেমের ৬টি লাইভ ফ্লো ও গাণিতিক হিসাব (Core System Flows)](#-পার্ট-৬-সিস্টেমের-৬টি-লাইভ-ফ্লো-ও-গাণিতিক-হিসাব-core-system-flows)
-7. [🎤 পার্ট ৭: শিক্ষক বা ভাইভা বোর্ডের সম্ভাব্য ১৫টি প্রশ্ন ও উত্তর (Viva Q&A)](#-পার্ট-৭-শিক্ষক-বা-ভাইভা-বোর্ডের-সম্ভাব্য-১৫টি-প্রশ্ন-ও-উত্তর-viva-qa)
+1. [🏫 পার্ট ১: একদম নতুনদের জন্য ভিজ্যুয়াল ওয়েব ডেভেলপমেন্ট (Visual Crash Course)](#-পার্ট-১-একদম-নতুনদের-জন্য-ভিজ্যুয়াল-ওয়েব-ডেভেলপমেন্ট-visual-crash-course)
+2. [🗺️ পার্ট ২: ইকুইপমেন্টের জীবনচক্র ডায়াগ্রাম (Equipment Status Lifecycle)](#-পার্ট-২-ইকুইপমেন্টের-জীবনচক্র-ডায়াগ্রাম-equipment-status-lifecycle)
+3. [🏗️ পার্ট ৩: সিস্টেম আর্কিটেকচার ও ডাটাবেস ফলব্যাক ডায়াগ্রাম (Architecture & Fallback)](#-পার্ট-৩-সিস্টেম-আর্কিটেকচার-ও-ডাটাবেস-ফলব্যাক-ডায়াগ্রাম-architecture--fallback)
+4. [⚡ পার্ট ৪: ফাইন চেক ও অটো-ব্লক সেকুয়েন্স ডায়াগ্রাম (Middleware Flow)](#-পার্ট-৪-ফাইন-চেক-ও-অটো-ব্লক-সেকুয়েন্স-ডায়াগ্রাম-middleware-flow)
+5. [🛠️ পার্ট ৫: জিরো থেকে এমন প্রজেক্ট কীভাবে বানাতে হয় (Build Guide)](#-পার্ট-৫-জিরো-থেকে-এমন-প্রজেক্ট-কীভাবে-বানাতে-হয়-build-guide)
+6. [💻 পার্ট ৬: মূল কোডের লাইন-বাই-লাইন ব্যাখ্যা (Line-by-Line Code Breakdown)](#-পার্ট-৬-মূল-কোডের-লাইন-বাই-লাইন-ব্যাখ্যা-line-by-line-code-breakdown)
+7. [🎤 পার্ট ৭: শিক্ষক বা ভাইভা বোর্ডের ১৫টি প্রশ্ন ও উত্তর (Viva Q&A)](#-পার্ট-৭-শিক্ষক-বা-ভাইভা-বোর্ডের-১৫টি-প্রশ্ন-ও-উত্তর-viva-qa)
 
 ---
 
-# 🏫 পার্ট ১: একদম নতুনদের জন্য ওয়েবসাইট ও কোডিং শিক্ষা (Beginner Crash Course)
+# 🏫 পার্ট ১: একদম নতুনদের জন্য ভিজ্যুয়াল ওয়েব ডেভেলপমেন্ট (Visual Crash Course)
 
-আপনি যদি জীবনে প্রথম ওয়েবসাইট বা ওয়েবের কোড দেখে থাকেন, তবে নিচের ৩টি বাস্তব রূপক (Analogy) বুঝলেই পুরো সিস্টেম আপনার কাছে পানির মতো পরিষ্কার হয়ে যাবে!
+### 🍽️ ১.১ ওয়েবসাইট কীভাবে কাজ করে? (Mermaid Flowchart)
 
-### 🍽️ ১.১ রেস্টুরেন্ট রূপক (Restaurant Analogy — ওয়েবসাইট কীভাবে কাজ করে?)
+নিচের ডায়াগ্রামটি দেখলে বুঝবেন একটি ওয়েবসাইট কীভাবে ব্রাউজার থেকে সার্ভার ও ডাটাবেসে গিয়ে ফেরত আসে:
 
-একটি রেস্টুরেন্টে যেমন কাজ হয়, ওয়েবসাইটেও হুবহু একই কাজ হয়:
+```mermaid
+flowchart TD
+    subgraph Client ["💻 ক্লায়েন্ট সাইড (User Browser)"]
+        User["👨‍🎓 ইউজার (Student/Staff)"]
+        Browser["🌐 Web Browser (Chrome/Edge)"]
+        User -->|১. রিকোয়েস্ট পাঠায় (e.g. GET /student/browse)| Browser
+    end
 
-```text
-[ইউজার / কাস্টমার]  ──(১. Order / Request)──>  [সার্ভার / ওয়েটার]  ──(২. রান্নার লজিক)──>  [কন্ট্রোলার / শেফ]
-      ▲                                                                                      │
-      │                                                                                      ▼
-[৩. খাবার পরিবেশন / Response]  ◄─── (EJS View) ◄─── [৪. ডাটা আনা] ◄─── [ডাটাবেস / স্টোররুম]
+    subgraph Server ["⚡ সার্ভার সাইড (Node.js + Express)"]
+        Router["🛣️ Router (routes/studentRoutes.js)"]
+        Middleware["🛡️ Fine Check Middleware"]
+        Controller["🧠 Controller (studentController.js)"]
+        
+        Browser -->|২. HTTP Request| Router
+        Router -->|৩. চেক সিকিউরিটি ও ফাইন| Middleware
+        Middleware -->|৪. পাস করলে লজিকে পাঠায়| Controller
+    end
+
+    subgraph Database ["🗄️ ডাটাবেস লেয়ার (Data Layer)"]
+        Model["📦 Model (models/Request.js)"]
+        MySQL[("🐬 MySQL Database")]
+        JSON[("📄 seed_data.json (Fallback)")]
+        
+        Controller -->|৫. ডাটা খোজে| Model
+        Model -->|৬. ডাটাবেস চালু থাকলে| MySQL
+        Model -.->|৭. ডাটাবেস বন্ধ থাকলে| JSON
+    end
+
+    subgraph View ["🎨 ভিউ রেন্ডারিং (EJS UI)"]
+        EJS["📄 EJS View (views/student/browse.ejs)"]
+        Controller -->|৮. ডাটা দিয়ে HTML সাজায়| EJS
+        EJS -->|৯. ফাইনাল HTML Response| Browser
+    end
+
+    style Client fill:#e0e7ff,stroke:#4338ca,stroke-width:2px
+    style Server fill:#fef3c7,stroke:#d97706,stroke-width:2px
+    style Database fill:#dcfce7,stroke:#15803d,stroke-width:2px
+    style View fill:#fce7f3,stroke:#be185d,stroke-width:2px
 ```
 
-- **Client (ব্রাউজার/কাস্টমার):** ইউজার মোবাইল বা কম্পিউটারের ব্রাউজারে `http://localhost:3000` লিখে বাটনে চাপ দেয়। এটাকে বলা হয় **HTTP Request**।
-- **Server (ওয়েটার/Node.js + Express):** সার্ভার হলো মাঝখানের লোক। সে ইউজারের অর্ডার গ্রহণ করে বুঝে নেয় ইউজার কী চাইছে (যেমন: "আমাকে ক্যাটালগ পেজ দেখাও")।
-- **Controller (শেফ/লজিক):** রান্নার শেফের মতো। সে যাচাই করে দেখে ইউজার লগইন করা আছে কিনা, তার কাছে কোনো লেট ফি বাকি আছে কিনা।
-- **Database (ফ্রিজ/স্টোররুম):** যেখানে সব কাঁচা ডাটা (ইউজারের নাম, পাসওয়ার্ড, ইকুইপমেন্টের তালিকা) নিরাপদে জমা থাকে।
-- **View (সাজানো প্লেট/HTML/EJS):** ডাটা এনে সুন্দর ডিজাইনে সাজিয়ে ইউজারের স্ক্রিনে ফেরত পাঠানোকে বলা হয় **HTTP Response**।
+---
+
+# 🗺️ পার্ট ২: ইকুইপমেন্টের জীবনচক্র ডায়াগ্রাম (Equipment Status Lifecycle)
+
+ল্যাবের একটি ইকুইপমেন্ট (যেমন: `LAP-001`) আবেদন থেকে শুরু করে ফেরত দেওয়া বা লেট হয়ে জরিমানা হওয়া পর্যন্ত কী কী অবস্থার (States) মধ্য দিয়ে যায়:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Available: ল্যাবে জমা আছে (Ready to Borrow)
+
+    Available --> Pending: স্টুডেন্ট রিকোয়েস্ট করলো (Locked Immediately)
+    
+    Pending --> Rejected: স্টাফ বাতিল করলো
+    Rejected --> Available: পুনরায় ক্যাটালগে ফেরত
+
+    Pending --> Approved: স্টাফ এপ্রুভ করলো (Reserved List)
+    
+    Approved --> Cancelled: স্টুডেন্ট ৫ মিনিটের মধ্যে ক্যানসেল করলো
+    Cancelled --> Available: ক্যাটালগে ফেরত
+
+    Approved --> Issued: স্টাফ হাতে জিনিস বুঝিয়ে দিলো (Timer Starts ⏱️)
+
+    Issued --> Returned: সময়মত জমা দিলো (Condition: Good/Damaged)
+    Returned --> Available: ক্যাটালগে ফেরত
+
+    Issued --> Overdue: নির্ধারিত সময় পার হয়ে গেল! (NOW > due_at)
+    Overdue --> Blocked: ইউজার ব্লক হলো & ফাইন জমা হলো 🚨
+    
+    Blocked --> AutoUnblocked: স্টাফ ফাইন Mark as Paid করলো
+    AutoUnblocked --> Returned
+```
 
 ---
 
-### 🔤 ১.২ মূল শব্দগুলোর সহজ অর্থ (Basic Terminology)
+# 🏗️ পার্ট ৩: সিস্টেম আর্কিটেকচার ও ডাটাবেস ফলব্যাক ডায়াগ্রাম (Architecture & Fallback)
 
-1. **JavaScript (JS):** ব্রাউজার এবং সার্ভার উভয় জায়গায় সিদ্ধান্ত নেওয়ার কোডিং ল্যাঙ্গুয়েজ। (যেমন: `if (age < 18) { block(); }`)
-2. **Node.js:** জাভাস্ক্রিপ্ট সাধারণত শুধু ব্রাউজারে চলে। কিন্তু Node.js হলো এমন একটি ইঞ্জিন যা জাভাস্ক্রিপ্টকে আপনার কম্পিউটারের ব্যাকএন্ড সার্ভার হিসেবে কাজ করতে দেয়।
-3. **Express.js:** এটি Node.js এর একটি তৈরি করা টুলকিট (Framework), যা দিয়ে খুব সহজে রাউট (URL) তৈরি করা যায় (যেমন: `/auth/login`, `/student/browse`)।
-4. **NPM (Node Package Manager):** প্লে-স্টোর বা অ্যাপ-স্টোরের মতো। অন্যের তৈরি প্রজেক্টের প্রয়োজনীয় লাইব্রেরি (যেমন: `mysql2`, `bcrypt`, `express`) ডাউনলোড করার দোকান।
-5. **EJS (Embedded JavaScript):** সাধারণ HTML ফাইল ডায়নামিক হতে পারে না। EJS এর মাধ্যমে HTML ফাইলের ভেতরে জাভাস্ক্রিপ্টের লুপ (`for`) এবং কন্ডিশন (`if/else`) লিখে ডাটা দেখানো যায়।
-6. **Middleware:** দরজার সিকিউরিটি গার্ড। কোনো ইউজার পেজে ঢোকার আগেই মিডলওয়্যার চেক করে দেখে— সে লগইন করেছে কিনা, কিংবা তার অ্যাকাউন্ট ব্লকড কিনা।
+আমাদের প্রজেক্টের **Dual-Mode System** কীভাবে ডাটাবেস ব্যর্থ হলেও মেমোরি ও JSON ব্যবহার করে সাইট সচল রাখে:
+
+```mermaid
+graph TD
+    A["🌐 Web Request Received"] --> B{"🐬 MySQL Available?"}
+    
+    B -- YES (Normal Mode) --> C["📦 Query MySQL Database"]
+    C --> D["💾 MySQL Session Store"]
+    D --> E["🖥️ Render Page with DB Data"]
+
+    B -- NO (Fallback / Offline Demo Mode) --> F["⚠️ Switch to JSON Fallback"]
+    F --> G["📄 Read from data/seed_data.json"]
+    F --> H["🧠 MemorySessionStore (RAM)"]
+    G --> I["🖥️ Render Page with JSON Demo Data"]
+
+    style B fill:#fef08a,stroke:#ca8a04
+    style C fill:#bbf7d0,stroke:#16a34a
+    style F fill:#fecaca,stroke:#dc2626
+    style H fill:#e0e7ff,stroke:#4f46e5
+```
 
 ---
 
-# 🛠️ পার্ট ২: জিরো থেকে এমন প্রজেক্ট কীভাবে বানাতে হয় (Step-by-Step Build Guide)
+# ⚡ পার্ট ৪: ফাইন চেক ও অটো-ব্লক সেকুয়েন্স ডায়াগ্রাম (Middleware Flow)
 
-আপনি যদি সম্পূর্ণ নতুন একটি প্রজেক্ট নিজে থেকে শূন্য থেকে বানাতে চান, তবে এই ৭টি ধাপে বানাতে হবে:
+কোনো Cron Job ছাড়াই **`fineCheckMiddleware.js`** কীভাবে ইউজারের প্রতিটি পেজ রিকোয়েস্টে লেট ডিটেক্ট করে:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Student as 👨‍🎓 Student
+    participant Middleware as 🛡️ fineCheckMiddleware
+    participant DB as 🗄️ Database / JSON
+    participant App as 🧠 App Controller
+
+    Student->>Middleware: পেজ ব্রাউজ বা ক্লিক করলো (e.g. GET /student/browse)
+    Middleware->>DB: ইউজারের চালু থাকা 'Issued' রিকোয়েস্ট খোঁজে
+    DB-->>Middleware: ফেরত দেয় Active Issued Items (with due_at)
+    
+    alt সময় পার হয়ে গেছে (NOW > due_at) 🚨
+        Middleware->>DB: ১. নতুন ফাইন তৈরি করো (Fine Amount = Days * Rate)
+        Middleware->>DB: ২. ইউজারের অ্যাকাউন্ট ব্লক করো (status = 'Blocked')
+        Middleware->>DB: ৩. ব্লকিং হিস্ট্রি সেভ করো (block_type = 'Auto')
+        Middleware-->>Student: 🛑 রুট রিডাইরেক্ট ➔ Send to /student/blocked page
+    else সময় পার হয়নি (NOW <= due_at) ✅
+        Middleware->>App: ৪. next() ডাকার মাধ্যমে সাধারণ পেজে যেতে দাও
+        App-->>Student: 📄 নরমাল পেজ দেখাও
+    end
+```
+
+---
+
+# 👑 রোল ও পারমিশন হায়ারার্কি ডায়াগ্রাম (Role & Access Control)
+
+সিস্টেমে ৩টি রোল কোন কোন পেজে এক্সেস পাবে:
+
+```mermaid
+mindmap
+  root((EWU Lending System))
+    👨‍🎓 Student & Faculty
+      Browse Catalog with Search/Filters
+      Request Equipment (Min 2 mins / 1 day)
+      5-min Cancellation Window
+      My Requests & My Fines View
+    👮 Staff (Lab Officer)
+      Pending Requests Queue
+      Approve / Reject Requests
+      Reserved List & Issue Equipment
+      Return Form (Good / Damaged Check)
+      Fine Management (Mark as Paid)
+      Manual Block / Unblock Management
+    👑 Admin (System Controller)
+      Dashboard Statistics
+      Equipment Types (Photo Upload & Base64 Crop)
+      Equipment Copies Management (e.g. LAP-001)
+      Create Staff Accounts
+      Fine Rate Settings (Per Day / Per Min)
+      System Audit Logs
+      Maintenance Management
+```
+
+---
+
+# 🛠️ পার্ট ৫: জিরো থেকে এমন প্রজেক্ট কীভাবে বানাতে হয় (Build Guide)
+
+আপনি যদি নতুন একটি প্রজেক্ট শূন্য থেকে বানাতে চান, তবে এই ৭টি ধাপে বানাতে হবে:
 
 ```text
 [Step 1: Folder & npm init] ➔ [Step 2: Install Packages] ➔ [Step 3: App Server Setup] 
@@ -59,15 +190,13 @@
 ```
 
 ### 🔹 Step 1: প্রজেক্ট ফোল্ডার ও লাইব্রেরি শুরু করা
-কমান্ড প্রম্পটে গিয়ে লিখবেন:
 ```bash
 mkdir my-project
 cd my-project
 npm init -y
 ```
-এটি একটি `package.json` ফাইল তৈরি করবে যা প্রজেক্টের সব হিসাব রাখবে।
 
-### 🔹 Step 2: প্রয়োজনীয় প্যাকেজসমূহ ইনস্টল করা
+### 🔹 Step 2: প্রয়োজনীয় প্যাকেজসমূহ ইনস্টল করা
 ```bash
 npm install express ejs mysql2 express-session connect-flash dotenv method-override bcrypt
 ```
@@ -90,69 +219,9 @@ app.listen(3000, () => {
 
 ---
 
-# 📌 পার্ট ৩: প্রজেক্টের উদ্দেশ্য ও বাস্তব উদাহরণ (Real-Life Scenario)
+# 💻 পার্ট ৬: মূল কোডের লাইন-বাই-লাইন ব্যাখ্যা (Line-by-Line Code Breakdown)
 
-### 🏢 বাস্তব সমস্যা:
-ইস্ট ওয়েস্ট বিশ্ববিদ্যালয়ের (EWU) ল্যাবে ল্যাপটপ, প্রজেক্টর, ক্যামেরা ইত্যাদি দামি জিনিস থাকে।
-- আগে খাতা-কলমে হিসাব রাখায় সময়মতো না ফেরত দিলে ম্যানুয়ালি লেট ফি হিসাব করা অসম্ভব ছিল।
-- লেট করা স্টুডেন্টকে সাথে সাথে ব্লক করার কোনো স্বয়ংক্রিয় উপায় ছিল না।
-
-### 💡 আমাদের সমাধান (EWU Equipment Lending System):
-1. **৩টি রোল (Role):** Student/Faculty, Staff (ল্যাব অফিসার) এবং Admin।
-2. **ইমেইল নিরাপত্তা:** স্টুডেন্টের জন্য `@std.ewubd.edu` এবং ফ্যাকাল্টির জন্য `@ewubd.edu` ছাড়া সাইনআপ অগ্রহনযোগ্য।
-3. **তাত্ক্ষণিক লক (`Pending` status):** স্টুডেন্ট রিকোয়েস্ট করা মাত্রই ওই আইটেমের স্ট্যাটাস `Pending` হয়ে যায় যেন অন্য কেউ ডুপ্লিকেট বুকিং করতে না পারে।
-4. **স্মার্ট মিডলওয়্যার (`fineCheckMiddleware`):** কোনো ব্যাকগ্রাউন্ড ক্রন জব ছাড়াই স্টুডেন্ট যেকোনো পেজে গেলেই সিস্টেম সময় মেপে অনাদায়ী জরিমানা ও ব্লক হিসাব করে ফেলে!
-5. **স্বয়ংক্রিয় আনব্লক (Auto-Unblock):** সব জমা জরিমানা পরিশোধ করলেই অ্যাকাউন্ট আপনা-আপনি এক্টিভ হয়ে যায়।
-6. **ডাটাবেস ছাড়া মোড (JSON Fallback):** ডাটাবেস সার্ভিস বন্ধ থাকলেও `seed_data.json` ফাইল থেকে তথ্য নিয়ে ওয়েবসাইট ১০০% সচল থাকে!
-
----
-
-# 📁 পার্ট ৪: প্রজেক্ট ফাইল ও ফোল্ডার পরিচিতি (Folder Architecture)
-
-আমাদের প্রজেক্টের ফাইল স্ট্রাকচার **MVC (Model-View-Controller)** প্যাটার্ন মেনে চলে:
-
-```text
-E:\Websites\UELS
-├── app.js                         # 🚀 প্রধান এন্ট্রি ফাইল (সার্ভার চালক)
-├── config/                        # ⚙️ কনফিগারেশন
-│   ├── db.js                      # MySQL কানেকশন ও অটো-ফলব্যাক মোড ডিটেক্টর
-│   └── fallback.js                # ডাটাবেস বন্ধ থাকলে JSON থেকে ডাটা পড়ার লজিক
-├── controllers/                   # 🧠 বিঝনেস লজিক (অনুরোধ প্রসেসিং)
-│   ├── authController.js          # লগইন, সাইনআপ ও EWU ইমেইল যাচাইকরণ
-│   ├── studentController.js       # ফিল্টারসহ ক্যাটালগ ব্রাউজ ও রিকোয়েস্ট গ্রহণ
-│   ├── staffController.js         # এপ্রুভ, হ্যান্ডওভার (Issue) ও ফাইন কালেকশন
-│   └── adminController.js         # ইকুইপমেন্ট ম্যানেজমেন্ট, ফাইন হার ও অডিট লগ
-├── models/                        # 🗄️ ডাটাবেস কুয়েরি (Database Operations)
-│   ├── User.js                    # ইউজার টেবিল
-│   ├── EquipmentType.js           # ইকুইপমেন্ট ক্যাটাগরি ও ফটো
-│   ├── EquipmentCopy.js           # নির্দিষ্ট কপি (যেমন: LAP-001)
-│   ├── Request.js                 # আবেদন স্ট্যাটাস
-│   ├── Fine.js                    # জরিমানার হিসাব
-│   ├── Block.js                   # ইউজার ব্লকিং হিস্ট্রি
-│   ├── Setting.js                 # ফাইন রেট সেটিংস
-│   └── AuditLog.js                # এডমিন অ্যাকশন ট্র্যাকার
-├── middleware/                    # 🛡️ সিকিউরিটি ফিল্টার
-│   ├── authMiddleware.js          # এক্সেস কন্ট্রোল (Student/Staff/Admin Check)
-│   └── fineCheckMiddleware.js     # অটোমেটিক ওভারডিউ ও ব্লক চেক
-├── views/                         # 🎨 ইউজার ইন্টারফেস (EJS Templates)
-│   ├── auth/                      # varsity.jpg স্প্লিট-স্ক্রিন লগইন/সাইনআপ
-│   ├── student/                   # ড্যাশবোর্ড, ফিল্টারসহ ক্যাটালগ, রিকোয়েস্ট ফর্ম
-│   ├── staff/                     # পেন্ডিং আবেদন ও রিটার্ন ফর্ম
-│   ├── admin/                     # ফটো আপলোড সহ ইকুইপমেন্ট ও ফাইন সেটিংস
-│   └── layouts/main.ejs           # ট্রেন এনিমেশন নোটিফিকেশন বার সহ মেইন লেআউট
-└── public/
-    └── varsity.jpg                # ইস্ট ওয়েস্ট ইউনিভার্সিটির ছবি
-```
-
----
-
-# 💻 পার্ট ৫: মূল কোডের লাইন-বাই-লাইন ব্যাখ্যা (Line-by-Line Code Breakdown)
-
-যদি শিক্ষক কোড দেখতে চান, তবে নিচের ৩টি ফাইলের ব্যাখ্যা মুখস্থের মতো বলে দিতে পারবেন:
-
-### 📄 ৫.১ `controllers/authController.js` (EWU Email Validation)
-
-শিক্ষককে যেভাবে বুঝাবেন: *"স্যার, এই কোডটিতে স্টুডেন্ট ও ফ্যাকাল্টির ইমেইল ডোমেইন ভ্যালিডেশন করা হয়েছে।"*
+### 📄 ৬.১ `controllers/authController.js` (EWU Email Validation)
 
 ```javascript
 // ১. ইউজার ফর্ম থেকে পাঠানো ডাটা ধরছি
@@ -176,40 +245,31 @@ if (role === 'Faculty' && !emailLower.endsWith('@ewubd.edu')) {
 
 ---
 
-### 📄 ৫.২ `middleware/fineCheckMiddleware.js` (স্বয়ংক্রিয় ফাইন ও ব্লক লজিক)
-
-শিক্ষককে যেভাবে বুঝাবেন: *"স্যার, এটি আমাদের কাস্টম মিডলওয়্যার। ইউজার পেজ রিফ্রেশ করলেই এটি চেক করে তার কোনো ওভারডিউ আইটেম আছে কিনা।"*
+### 📄 ৬.২ `middleware/fineCheckMiddleware.js` (স্বয়ংক্রিয় ফাইন ও ব্লক লজিক)
 
 ```javascript
 module.exports = async function fineCheckMiddleware(req, res, next) {
-    // ১. ইউজার লগইন না থাকলে পরের স্টেপে চলে যাও
     if (!req.session.user || req.session.user.role === 'Admin' || req.session.user.role === 'Staff') {
         return next();
     }
 
     const userId = req.session.user.id;
-
-    // ২. ডাটাবেস থেকে ইউজারের সব 'Issued' বা হাতে থাকা ইকুইপমেন্ট তুলে আনা
     const activeRequests = await Request.findIssuedByUserId(userId);
-
     const now = new Date();
 
     for (const request of activeRequests) {
         const dueAt = new Date(request.due_at);
 
-        // ৩. যদি বর্তমান সময় (now) ফেরতের শেষ সময় (dueAt) অতিক্রম করে!
+        // যদি বর্তমান সময় (now) ফেরতের শেষ সময় (dueAt) অতিক্রম করে!
         if (now > dueAt) {
-            // ৪. কত সময় ওভারডিউ হয়েছে তা মেপে ফাইন হিসাব করা
             const diffMs = now - dueAt;
             const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
             
             const ratePerDay = await Setting.get('late_fine_rate_per_day') || 50;
             const fineAmount = diffDays * ratePerDay;
 
-            // ৫. ডাটাবেসে ফাইনের নতুন এন্ট্রি তৈরি করা
+            // ডাটাবেসে ফাইনের নতুন এন্ট্রি তৈরি এবং ইউজার ব্লক করা
             await Fine.create({ user_id: userId, request_id: request.id, amount: fineAmount });
-
-            // ৬. ইউজারের অ্যাকাউন্ট ব্লক করে দেওয়া
             await User.updateStatus(userId, 'Blocked');
             await Block.create({ user_id: userId, reason: 'Overdue Equipment', block_type: 'Auto' });
         }
@@ -221,91 +281,52 @@ module.exports = async function fineCheckMiddleware(req, res, next) {
 
 ---
 
-### 📄 ৫.৩ `app.js` (Hybrid Session Store - Offine/Demo Mode Safety)
-
-শিক্ষককে যেভাবে বুঝাবেন: *"স্যার, ডাটাবেস বন্ধ থাকলেও যেন সাইট না ক্র্যাশ করে, তাই আমরা কাস্টম HybridSessionStore বানিয়েছি।"*
-
-```javascript
-class HybridSessionStore extends session.Store {
-    get(sid, callback) {
-        // যদি MySQL ডাটাবেস চালু থাকে, MySQL থেকে সেশন আনবে
-        if (db.isAvailable() && mySqlStore) {
-            mySqlStore.get(sid, (err, sessionData) => {
-                if (err) return memoryStore.get(sid, callback);
-                callback(null, sessionData);
-            });
-        } else {
-            // ডাটাবেস বন্ধ থাকলে RAM / MemoryStore থেকে সেশন আনবে (ক্র্যাশ করবে না!)
-            memoryStore.get(sid, callback);
-        }
-    }
-}
-```
-
----
-
-# 🔄 পার্ট ৬: সিস্টেমের ৬টি লাইভ ফ্লো ও গাণিতিক হিসাব (Core System Flows)
-
-### 📊 ৬.১ সময়ের গাণিতিক হিসাব (Timer Mathematics)
-সিস্টেমে সময় ও জরিমানার হিসাব কীভাবে হয়:
-
-1. **ইস্যুর সময় (Issue Event):**
-   $$\text{due\_at} = \text{NOW()} + \text{duration\_value (in Minutes or Days)}$$
-2. **ওভারডিউ সময় (Overdue Calculation):**
-   $$\text{Overdue Time} = \text{NOW()} - \text{due\_at}$$
-3. **জরিমানার টাকা (Fine Calculation):**
-   $$\text{Fine Amount} = \text{Overdue Days} \times \text{Late Fine Rate per Day (Default 50 TK)}$$
-
----
-
-# 🎤 পার্ট ৭: শিক্ষক বা ভাইভা বোর্ডের সম্ভাব্য ১৫টি প্রশ্ন ও উত্তর (Viva Q&A)
-
-এই ১৫টি প্রশ্নের উত্তর মুখস্থ রাখলে ভাইভাতে আপনাকে কেউ আটকাতে পারবে না:
+# 🎤 পার্ট ৭: শিক্ষক বা ভাইভা বোর্ডের ১৫টি প্রশ্ন ও উত্তর (Viva Q&A)
 
 #### 🟢 ১. প্রশ্ন: আপনার প্রজেক্টটি কী কাজ করে এবং কার জন্য তৈরি?
 > **উত্তর:** "স্যার, আমাদের প্রজেক্টের নাম **EWU Equipment Lending System**। এটি ইস্ট ওয়েস্ট ইউনিভার্সিটির ল্যাব ইকুইপমেন্ট ডিজিটালভাবে ধার দেওয়া ও ট্র্যাকিং করার স্মার্ট ম্যানেজমেন্ট সিস্টেম। এটি Student, Staff এবং Admin—এই ৩টি রোলে কাজ করে।"
 
-#### 🟢 ২. প্রশ্ন: কোডিং স্ট্রাকচারে কোন আর্কিটেকচার ব্যবহার করা হয়েছে?
-> **উত্তর:** "আমরা জনপ্রিয় **MVC (Model-View-Controller)** আর্কিটেকচার ব্যবহার করেছি। কোড ক্লিন ও মেইনটেইন করা সহজ করার জন্য আমরা ডাটাবেস (Model), ডিজাইন (View) এবং লজিক (Controller) আলাদা রেখেছি।"
+#### 🟢 ২. প্রশ্ন: কোডিং স্ট্রাকচারে কোন আর্কিটেকচার ব্যবহার করা হয়েছে?
+> **উত্তর:** "আমরা জনপ্রিয় **MVC (Model-View-Controller)** আর্কিটেকচার ব্যবহার করেছি। কোড ক্লিন ও মেইনটেইন করা সহজ করার জন্য আমরা ডাটাবেস (Model), ডিজাইন (View) এবং লজিক (Controller) আলাদা রেখেছি।"
 
 #### 🟢 ৩. প্রশ্ন: স্টুডেন্ট রেজিস্ট্রেশনে ইমেইল কীভাবে ভ্যালিডেট করেছ?
-> **উত্তর:** "আমরা সার্ভার সাইডে `authController.js` এ `endsWith()` মেথড দিয়ে চেক করেছি স্টুডেন্ট ইমেইল `@std.ewubd.edu` এবং ফ্যাকাল্টি ইমেইল `@ewubd.edu` কিনা। অন্য কোনো ইমেইল দিলে সিস্টেম রেজিস্ট্রেশন রিজেক্ট করে।"
+> **উত্তর:** "আমরা সার্ভার সাইডে `authController.js` এ `endsWith()` মেথড দিয়ে চেক করেছি স্টুডেন্ট ইমেইল `@std.ewubd.edu` এবং ফ্যাকাল্টি ইমেইল `@ewubd.edu` কিনা। অন্য কোনো ইমেইল দিলে সিস্টেম রেজিস্ট্রেশন রিজেক্ট করে।"
 
-#### 🟢 ৪. প্রশ্ন: ব্যাকগ্রাউন্ডে Cron Job ছাড়াই ওভারডিউ ও ফাইন কীভাবে হিসাব হচ্ছে?
-> **উত্তর:** "আমরা **`fineCheckMiddleware.js`** নামের কাস্টম এক্সপ্রেস মিডলওয়্যার বানিয়েছি। স্টুডেন্ট যেকোনো পেজে ঢোকার সাথে সাথে এই মিডলওয়্যার তার শেষ সময় অতিক্রম হয়েছে কিনা চেক করে এবং লেট হলে অন-দ্য-স্পট ফাইন সেভ করে অ্যাকাউন্ট ব্লক করে দেয়।"
+#### 🟢 ৪. প্রশ্ন: ব্যাকগ্রাউন্ডে Cron Job ছাড়াই ওভারডিউ ও ফাইন কীভাবে হিসাব হচ্ছে?
+> **উত্তর:** "আমরা **`fineCheckMiddleware.js`** নামের কাস্টম এক্সপ্রেস মিডলওয়্যার বানিয়েছি। স্টুডেন্ট যেকোনো পেজে ঢোকার সাথে সাথে এই মিডলওয়্যার তার শেষ সময় অতিক্রম হয়েছে কিনা চেক করে এবং লেট হলে অন-দ্য-স্পট ফাইন সেভ করে অ্যাকাউন্ট ব্লক করে দেয়।"
 
-#### 🟢 ৫. প্রশ্ন: ফাইন দিলে ইউজার কীভাবে আনব্লক হয়?
-> **উত্তর:** "ল্যাব অফিসার ফাইন জমার পর **Mark as Paid** এ চাপ দিলে সিস্টেম চেক করে ইউজারের কোনো Unpaid Fine বাকি আছে কিনা। কোনো ফাইন না থাকলে এবং ব্লকটি `Auto` হলে সিস্টেম একা একাই ইউজারের স্ট্যাটাস `Active` (Unblock) বানিয়ে দেয়।"
+#### 🟢 ৫. প্রশ্ন: ফাইন দিলে ইউজার কীভাবে আনব্লক হয়?
+> **উত্তর:** "ল্যাব অফিসার ফাইন জমার পর **Mark as Paid** এ চাপ দিলে সিস্টেম চেক করে ইউজারের কোনো Unpaid Fine বাকি আছে কিনা। কোনো ফাইন না থাকলে এবং ব্লকটি `Auto` হলে সিস্টেম একা একাই ইউজারের স্ট্যাটাস `Active` (Unblock) বানিয়ে দেয়।"
 
-#### 🟢 ৬. প্রশ্ন: রিকোয়েস্ট সাবমিট করা মাত্রই কপির স্ট্যাটাস `Pending` কেন হয়?
-> **উত্তর:** "যাতে ডুপ্লিকেট বুকিং বা Race Condition না ঘটে। ১টি ল্যাপটপ থাকলে ১ম স্টুডেন্ট আবেদন করা মাত্রই সেটি `Pending` লক হয়ে যায়, ফলে ২য় স্টুডেন্ট সাথে সাথে ক্যাটালগে 'All copies in use' দেখতে পায়।"
+#### 🟢 ৬. প্রশ্ন: রিকোয়েস্ট সাবমিট করা মাত্রই কপির স্ট্যাটাস `Pending` কেন হয়?
+> **উত্তর:** "যাতে ডুপ্লিকেট বুকিং বা Race Condition না ঘটে। ১টি ল্যাপটপ থাকলে ১ম স্টুডেন্ট আবেদন করা মাত্রই সেটি `Pending` লক হয়ে যায়, ফলে ২য় স্টুডেন্ট সাথে সাথে ক্যাটালগে 'All copies in use' দেখতে পায়।"
 
 #### 🟢 ৭. প্রশ্ন: 5-Minute Cancel Window কী এবং কীভাবে কাজ করে?
-> **উত্তর:** "স্টাফ রিকোয়েস্ট এপ্রুভ করার ৫ মিনিটের মধ্যে স্টুডেন্ট নিজের ভুল বুঝতে পারলে বিনামূল্যে আবেদন বাতিল (Cancel) করতে পারে। আমরা `(Current Time - Reserved Time) < 5 minutes` কন্ডিশন দিয়ে ইজেএস ভিউতে বাটনটি ডায়নামিক রেখেছি।"
+> **উত্তর:** "স্টাফ রিকোয়েস্ট এপ্রুভ করার ৫ মিনিটের মধ্যে স্টুডেন্ট নিজের ভুল বুঝতে পারলে বিনামূল্যে আবেদন বাতিল (Cancel) করতে পারে। আমরা `(Current Time - Reserved Time) < 5 minutes` কন্ডিশন দিয়ে ইজেএস ভিউতে বাটনটি ডাইনামিক রেখেছি।"
 
-#### 🟢 ৮. প্রশ্ন: ডাটাবেস বন্ধ হয়ে গেলে ওয়েবসাইট কীভাবে চলে?
-> **উত্তর:** "আমরা একটি **Dual-Mode Hybrid System** বানিয়েছি (`db.js` ও `fallback.js`)। ডাটাবেস বন্ধ থাকলে সিস্টেম ক্র্যাশ না করে `data/seed_data.json` ফাইল এবং মেমোরি সেশন ব্যবহার করে রিড-অনলি মোডে ওয়েবসাইট চালু রাখে।"
+#### 🟢 ৮. প্রশ্ন: ডাটাবেস বন্ধ হয়ে গেলে ওয়েবসাইট কীভাবে চলে?
+> **উত্তর:** "আমরা একটি **Dual-Mode Hybrid System** বানিয়েছি (`db.js` ও `fallback.js`)। ডাটাবেস বন্ধ থাকলে সিস্টেম ক্র্যাশ না করে `data/seed_data.json` ফাইল এবং মেমোরি সেশন ব্যবহার করে রিড-অনলি মোডে ওয়েবসাইট চালু রাখে।"
 
 #### 🟢 ৯. প্রশ্ন: ছবিতে অটো-ক্রপিং কীভাবে কাজ করে?
-> **উত্তর:** "ছবি আপলোড করলে ব্রাউজারের `FileReader API` ছবিকে Base64 স্ট্রিপে রূপান্তর করে এবং Tailwind CSS-এর `object-cover` ও `object-center` দিয়ে নিখুঁত ফ্রেমে কাট-ছাট বা ক্রপ করে রেন্ডার করে।"
+> **উত্তর:** "ছবি আপলোড করলে ব্রাউজারের `FileReader API` ছবিকে Base64 স্ট্রিপে রূপান্তর করে এবং Tailwind CSS-এর `object-cover` ও `object-center` দিয়ে নিখুঁত ফ্রেমে কাট-ছাট বা ক্রপ করে রেন্ডার করে।"
 
 #### 🟢 ১০. প্রশ্ন: ক্যাটালগের ফিল্টারিং কীভাবে কাজ করে?
-> **উত্তর:** "আমরা Vanilla JavaScript দিয়ে রিয়েল-টাইম DOM filtering করেছি। ইউজার টাইপ করলে বা ক্যাটাগরি ড্রপডাউন বদলালে কোনো পেজ রিলোড ছাড়াই কার্ডগুলো সাথে সাথে ফিল্টার ও সর্ট হয়ে যায়।"
+> **উত্তর:** "আমরা Vanilla JavaScript দিয়ে রিয়েল-টাইম DOM filtering করেছি। ইউজার টাইপ করলে বা ক্যাটাগরি ড্রপডাউন বদলালে কোনো পেজ রিলোড ছাড়াই কার্ডগুলো সাথে সাথে ফিল্টার ও সর্ট হয়ে যায়।"
 
 #### 🟢 ১১. প্রশ্ন: SQL Injection আক্রমণ প্রতিরোধের জন্য কী ব্যবহার করেছ?
-> **উত্তর:** "আমরা সরাসরি কোয়েরিতে ভ্যারিয়েবল যোগ না করে `mysql2` লাইব্রেরির **Parameterized Query (`?` placeholder)** ব্যবহার করেছি, যা ডাটা এস্কেপ করে ডাটাবেস নিরাপদ রাখে।"
+> **উত্তর:** "আমরা সরাসরি কোয়েরিতে ভ্যারিয়েবল যোগ না করে `mysql2` লাইব্রেরির **Parameterized Query (`?` placeholder)** ব্যবহার করেছি, যা ডাটা এস্কেপ করে ডাটাবেস নিরাপদ রাখে।"
 
-#### 🟢 ১২. প্রশ্ন: পাসওয়ার্ড সিকিউরিটি কীভাবে দেওয়া হয়েছে?
-> **উত্তর:** "আমরা পাসওয়ার্ড প্লেইন টেক্সটে রাখি না। `bcrypt` লাইব্রেরি ব্যবহার করে ১-ওয়ে ক্রিপ্টোগ্রাফিক হ্যাশিংয়ের মাধ্যমে পাসওয়ার্ড সুরক্ষিত রাখা হয়েছে।"
+#### 🟢 ১২. প্রশ্ন: পাসওয়ার্ড সিকিউরিটি কীভাবে দেওয়া হয়েছে?
+> **উত্তর:** "আমরা পাসওয়ার্ড প্লেইন টেক্সটে রাখি না। `bcrypt` লাইব্রেরি ব্যবহার করে ১-ওয়ে ক্রিপ্টোগ্রাফিক হ্যাশিংয়ের মাধ্যমে পাসওয়ার্ড সুরক্ষিত রাখা হয়েছে।"
 
 #### 🟢 ১৩. প্রশ্ন: অডিট লগ (Audit Log) কী কাজে লাগে?
-> **উত্তর:** "ল্যাবের প্রতিটি সংবেদনশীল কাজ (যেমন: কে কাকে ব্লক করলো, কে এপ্রুভ করলো) টাইমস্ট্যাম্প সহ `audit_logs` টেবিলে জমায় থাকে যা শুধু এডমিন দেখতে পারেন।"
+> **উত্তর:** "ল্যাবের প্রতিটি সংবেদনশীল কাজ (যেমন: কে কাকে ব্লক করলো, কে এপ্রুভ করলো) টাইমস্ট্যাম্প সহ `audit_logs` টেবিলে জমায় থাকে যা শুধু এডমিন দেখতে পারেন।"
 
-#### 🟢 ১৪. প্রশ্ন: সর্বনিম্ন কত সময়ের জন্য ইকুইপমেন্ট ধার নেওয়া যায়?
-> **উত্তর:** "আমাদের সিস্টেমে ডে (Day) মোডে সর্বনিম্ন ১ দিন এবং মিনিট (Minute) মোডে সর্বনিম্ন ২ মিনিট নির্ধারণ করা হয়েছে।"
+#### 🟢 ১৪. প্রশ্ন: সর্বনিম্ন কত সময়ের জন্য ইকুইপমেন্ট ধার নেওয়া যায়?
+> **উত্তর:** "আমাদের সিস্টেমে ডে (Day) মোডে সর্বনিম্ন ১ দিন এবং মিনিট (Minute) মোডে সর্বনিম্ন ২ মিনিট নির্ধারণ করা হয়েছে।"
 
 #### 🟢 ১৫. প্রশ্ন: ট্রেন এনিমেশন নোটিফিকেশন বারটি কীভাবে তৈরি করেছ?
-> **উত্তর:** "আমরা Tailwind CSS ও কাস্টম CSS `@keyframes trainRide` ব্যবহার করে একটি স্মুথ ইনফিনিট লুপের ট্রেন টিঙ্কার বার বানিয়েছি যা পেজের উপরে স্ক্রোল হতে থাকে এবং মাউস রাখলে পজ (Pause) হয়।"
+> **উত্তর:** "আমরা Tailwind CSS ও কাস্টম CSS `@keyframes trainRide` ব্যবহার করে একটি স্মুথ ইনফিনিট লুপের ট্রেন টিঙ্কার বার বানিয়েছি যা পেজের উপরে স্ক্রোল হতে থাকে এবং মাউস রাখলে পজ (Pause) হয়।"
 
 ---
 
